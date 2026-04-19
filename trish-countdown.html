@@ -155,7 +155,7 @@
   .school-days-inner {
     position: relative;
     z-index: 1;
-    padding: 40px 50px;
+    padding: 60px 70px;
   }
 
   .school-days-label {
@@ -185,15 +185,6 @@
     50% { text-shadow: 0 0 30px rgba(0,255,200,0.8), 0 0 80px rgba(0,255,200,0.5), 0 0 120px rgba(0,255,200,0.25); }
   }
 
-  .school-days-unit {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
-    text-transform: uppercase;
-    letter-spacing: 8px;
-    color: #666;
-    margin-top: 2px;
-  }
-
   .ring-label {
     font-family: 'Orbitron', sans-serif;
     font-size: clamp(0.6rem, 1.5vw, 0.75rem);
@@ -211,14 +202,6 @@
     50% { text-shadow: 0 0 15px rgba(200,80,255,0.7), 0 0 35px rgba(200,80,255,0.35); }
   }
 
-  .ring-sublabel {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.45rem, 1.1vw, 0.55rem);
-    color: #665599;
-    letter-spacing: 2px;
-    margin-top: 2px;
-    text-transform: uppercase;
-  }
 
   /* System log — outside container for z-index */
   .sys-log {
@@ -336,13 +319,11 @@
   <div class="subtitle">initiating classroom_escape_protocol.exe</div>
 
   <div class="center-piece">
-    <canvas id="ringCanvas" width="300" height="300"></canvas>
+    <canvas id="ringCanvas" width="340" height="340"></canvas>
     <div class="school-days-inner">
       <div class="school-days-label">School Days Remaining</div>
       <div class="school-days-number" id="schoolDays">--</div>
-      <div class="school-days-unit">days</div>
       <div class="ring-label">9-Year Cycle Closing</div>
-      <div class="ring-sublabel">Year 9 → Year 1</div>
     </div>
   </div>
 
@@ -415,9 +396,9 @@
   // ═══════════════════════════════════════
   const ringCanvas = document.getElementById('ringCanvas');
   const ringCtx = ringCanvas.getContext('2d');
-  const RING_SIZE = 300;
+  const RING_SIZE = 340;
   const CENTER = RING_SIZE / 2;
-  const RADIUS = 130;
+  const RADIUS = 150;
   const SEG_COUNT = 9;
   const GAP = 0.04; // radians gap between segments
   const SEG_ARC = (2 * Math.PI / SEG_COUNT) - GAP;
