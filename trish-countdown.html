@@ -195,34 +195,35 @@
   }
 
   .ring-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    font-weight: 700;
+    color: #c850ff;
+    letter-spacing: 3px;
+    margin-top: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(200, 80, 255, 0.5), 0 0 25px rgba(200, 80, 255, 0.2);
+    animation: cyclePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes cyclePulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(200,80,255,0.5), 0 0 25px rgba(200,80,255,0.2); }
+    50% { text-shadow: 0 0 15px rgba(200,80,255,0.7), 0 0 35px rgba(200,80,255,0.35); }
+  }
+
+  .ring-sublabel {
     font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    font-size: clamp(0.45rem, 1.1vw, 0.55rem);
     color: #665599;
     letter-spacing: 2px;
     margin-top: 2px;
     text-transform: uppercase;
   }
 
-  /* Status bar */
-  .status-bar {
-    display: flex;
-    justify-content: center;
-    gap: clamp(14px, 3vw, 30px);
-    flex-wrap: wrap;
-    margin-bottom: 14px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.5rem, 1.3vw, 0.65rem);
-    letter-spacing: 1px;
-    color: #555;
-  }
-
-  .status-item span { color: #00ffc8; }
-  .status-item .fire { color: #ff6600; text-shadow: 0 0 6px rgba(255,100,0,0.4); }
-  .status-item .purple { color: #cc44ff; text-shadow: 0 0 6px rgba(170,0,255,0.3); }
-
-  /* System log */
+  /* System log — outside container for z-index */
   .sys-log {
     max-width: 480px;
+    width: 90%;
     margin: 0 auto 14px;
     text-align: left;
     font-family: 'Share Tech Mono', monospace;
@@ -230,12 +231,13 @@
     line-height: 1.9;
     color: #555;
     min-height: 7.6em;
-    background: rgba(10, 10, 15, 0.92);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(10, 10, 15, 0.95);
+    border: 1px solid rgba(200, 80, 255, 0.12);
     border-radius: 4px;
     padding: 14px 18px;
     position: relative;
     z-index: 20;
+    box-shadow: 0 0 20px rgba(10, 10, 15, 0.8);
   }
 
   .sys-log .log-line {
@@ -339,27 +341,22 @@
       <div class="school-days-label">School Days Remaining</div>
       <div class="school-days-number" id="schoolDays">--</div>
       <div class="school-days-unit">days</div>
-      <div class="ring-label">9-year cycle closing</div>
+      <div class="ring-label">9-Year Cycle Closing</div>
+      <div class="ring-sublabel">Year 9 → Year 1</div>
     </div>
   </div>
 
-  <div class="status-bar">
-    <div class="status-item">TARGET: <span>2026.06.16</span></div>
-    <div class="status-item">STATUS: <span>ESCAPING</span></div>
-    <div class="status-item">CYCLE: <span class="purple">YEAR 9 → 1</span></div>
-    <div class="status-item">ZODIAC: <span class="fire">火馬 FIRE HORSE</span></div>
-  </div>
 
-  <div class="sys-log" id="sysLog">
-    <div class="log-line" data-delay="800"><span class="log-prefix">></span> <span class="log-fire">loading fire_horse_2026.sys</span> <span class="log-dim">— once every 60 years</span></div>
-    <div class="log-line" data-delay="2200"><span class="log-prefix">></span> <span class="log-fire">unstoppable forward motion initialized</span></div>
-    <div class="log-line" data-delay="3800"><span class="log-prefix">></span> <span class="log-fire">courage_that_burns_through_obstacles</span> <span class="log-cyan">LOADED</span></div>
-    <div class="log-line" data-delay="5600"><span class="log-prefix">></span> cycle_9: <span class="log-cyan">COMPLETING</span> <span class="log-dim">— nine years of lessons releasing</span></div>
-    <div class="log-line" data-delay="7400"><span class="log-prefix">></span> everything that needed to break <span class="log-cyan">BROKE</span></div>
-    <div class="log-line" data-delay="9200"><span class="log-prefix">></span> <span class="log-fire">the rarest, wildest energy in the zodiac</span> <span class="log-dim">— status: ACTIVE</span></div>
-    <div class="log-line" data-delay="11200"><span class="log-prefix">></span> what's next is <span class="log-cyan">entirely new</span></div>
-  </div>
+</div>
 
+<div class="sys-log" id="sysLog">
+  <div class="log-line" data-delay="800"><span class="log-prefix">></span> <span class="log-fire">loading fire_horse_2026.sys</span> <span class="log-dim">— once every 60 years</span></div>
+  <div class="log-line" data-delay="2200"><span class="log-prefix">></span> <span class="log-fire">unstoppable forward motion initialized</span></div>
+  <div class="log-line" data-delay="3800"><span class="log-prefix">></span> <span class="log-fire">courage_that_burns_through_obstacles</span> <span class="log-cyan">LOADED</span></div>
+  <div class="log-line" data-delay="5600"><span class="log-prefix">></span> cycle_9: <span class="log-cyan">COMPLETING</span> <span class="log-dim">— nine years of lessons releasing</span></div>
+  <div class="log-line" data-delay="7400"><span class="log-prefix">></span> everything that needed to break <span class="log-cyan">BROKE</span></div>
+  <div class="log-line" data-delay="9200"><span class="log-prefix">></span> <span class="log-fire">the rarest, wildest energy in the zodiac</span> <span class="log-dim">— status: ACTIVE</span></div>
+  <div class="log-line" data-delay="11200"><span class="log-prefix">></span> what's next is <span class="log-cyan">entirely new</span></div>
 </div>
 
 <div class="done-message">
@@ -438,50 +435,50 @@
 
       ringCtx.beginPath();
       ringCtx.arc(CENTER, CENTER, RADIUS, startAngle, endAngle);
-      ringCtx.lineWidth = 3;
-
       if (i < 8) {
         // Completed years — dim purple, spent
-        ringCtx.strokeStyle = 'rgba(100, 50, 140, 0.2)';
-        // Small dot at segment center
+        ringCtx.lineWidth = 4;
+        ringCtx.strokeStyle = 'rgba(100, 50, 140, 0.25)';
         ringCtx.stroke();
-        // Add a tiny "closed" dot
+
+        // "Closed" dot at segment midpoint
         const midAngle = (startAngle + endAngle) / 2;
         const dotX = CENTER + Math.cos(midAngle) * RADIUS;
         const dotY = CENTER + Math.sin(midAngle) * RADIUS;
         ringCtx.beginPath();
-        ringCtx.arc(dotX, dotY, 2, 0, Math.PI * 2);
-        ringCtx.fillStyle = 'rgba(100, 50, 140, 0.35)';
+        ringCtx.arc(dotX, dotY, 2.5, 0, Math.PI * 2);
+        ringCtx.fillStyle = 'rgba(100, 50, 140, 0.4)';
         ringCtx.fill();
       } else {
-        // Year 9 — the active segment, dimming based on school year progress
+        // Year 9 — the active segment, burning down with progress
         const remaining = 1 - progress;
-        const alpha = 0.3 + remaining * 0.7;
-        const glow = remaining * 20;
+        const alpha = 0.35 + remaining * 0.65;
+        const glow = remaining * 25;
 
-        // Draw the full arc dim
-        ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha * 0.3})`;
+        // Full arc ghost (shows where it started)
+        ringCtx.lineWidth = 4;
+        ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha * 0.15})`;
         ringCtx.stroke();
 
-        // Draw the remaining portion bright
+        // Remaining portion — bright and glowing
         const activeEnd = startAngle + SEG_ARC * remaining;
         ringCtx.beginPath();
         ringCtx.arc(CENTER, CENTER, RADIUS, startAngle, activeEnd);
-        ringCtx.lineWidth = 4;
+        ringCtx.lineWidth = 5;
         ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha})`;
-        ringCtx.shadowColor = `rgba(200, 80, 255, ${alpha * 0.8})`;
+        ringCtx.shadowColor = `rgba(200, 80, 255, ${alpha * 0.9})`;
         ringCtx.shadowBlur = glow;
         ringCtx.stroke();
         ringCtx.shadowBlur = 0;
 
-        // Bright dot at the leading edge
+        // Leading edge dot
         const edgeX = CENTER + Math.cos(activeEnd) * RADIUS;
         const edgeY = CENTER + Math.sin(activeEnd) * RADIUS;
         ringCtx.beginPath();
-        ringCtx.arc(edgeX, edgeY, 3, 0, Math.PI * 2);
+        ringCtx.arc(edgeX, edgeY, 4, 0, Math.PI * 2);
         ringCtx.fillStyle = `rgba(200, 80, 255, ${alpha})`;
-        ringCtx.shadowColor = `rgba(200, 80, 255, 0.8)`;
-        ringCtx.shadowBlur = 12;
+        ringCtx.shadowColor = `rgba(200, 80, 255, 0.9)`;
+        ringCtx.shadowBlur = 15;
         ringCtx.fill();
         ringCtx.shadowBlur = 0;
       }
