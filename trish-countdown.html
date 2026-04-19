@@ -107,7 +107,7 @@
   /* Progress bar — moved to top */
   .progress-wrapper {
     max-width: 500px;
-    margin: 0 auto 22px;
+    margin: 0 auto 18px;
   }
 
   .progress-track {
@@ -230,6 +230,12 @@
     line-height: 1.9;
     color: #555;
     min-height: 7.6em;
+    background: rgba(10, 10, 15, 0.92);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 14px 18px;
+    position: relative;
+    z-index: 20;
   }
 
   .sys-log .log-line {
@@ -247,24 +253,6 @@
   .sys-log .log-fire { color: #ff6600; text-shadow: 0 0 4px rgba(255,100,0,0.3); }
   .sys-log .log-cyan { color: #00ffc8; }
   .sys-log .log-dim { color: #444; }
-
-  /* Message */
-  .message {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(0.85rem, 2vw, 1.05rem);
-    font-weight: 600;
-    color: #777;
-    max-width: 460px;
-    margin: 0 auto;
-    line-height: 1.6;
-    letter-spacing: 0.5px;
-  }
-
-  .message em {
-    font-style: normal;
-    color: #00ffc8;
-    text-shadow: 0 0 8px rgba(0,255,200,0.3);
-  }
 
   /* Confetti */
   .confetti-piece {
@@ -331,9 +319,6 @@
 <div class="grid-bg"></div>
 
 <div class="container">
-  <h1>Trish // System Exit</h1>
-  <div class="subtitle">initiating classroom_escape_protocol.exe</div>
-
   <div class="progress-wrapper">
     <div class="progress-track">
       <div class="progress-fill" id="progressFill" style="width:0%"></div>
@@ -344,6 +329,9 @@
       <span>JUN 16 2026</span>
     </div>
   </div>
+
+  <h1>Trish // System Exit</h1>
+  <div class="subtitle">initiating classroom_escape_protocol.exe</div>
 
   <div class="center-piece">
     <canvas id="ringCanvas" width="300" height="300"></canvas>
@@ -372,10 +360,6 @@
     <div class="log-line" data-delay="11200"><span class="log-prefix">></span> what's next is <span class="log-cyan">entirely new</span></div>
   </div>
 
-  <div class="message">
-    Every bell that rings is one you'll never have to answer again.<br>
-    You did the hard thing, <em>Trish</em>. Now go do the next thing.
-  </div>
 </div>
 
 <div class="done-message">
