@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trish's Countdown to Freedom</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    color: #fff;
+    overflow: hidden;
+    padding: 20px;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .container {
+    text-align: center;
+    z-index: 10;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 700;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    font-style: italic;
+  }
+
+  .school-days-box {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 30px 40px;
+    margin-bottom: 30px;
+    border: 2px solid rgba(255,255,255,0.25);
+    display: inline-block;
+  }
+
+  .school-days-label {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    opacity: 0.85;
+    margin-bottom: 8px;
+  }
+
+  .school-days-number {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(4rem, 12vw, 7rem);
+    line-height: 1;
+    text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+  }
+
+  .school-days-unit {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 4px;
+  }
+
+  .countdown-row {
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 3vw, 25px);
+    margin-bottom: 35px;
+    flex-wrap: wrap;
+  }
+
+  .countdown-item {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 18px 14px;
+    min-width: clamp(70px, 18vw, 110px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .countdown-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    line-height: 1.1;
+  }
+
+  .countdown-label {
+    font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .message {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 700;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .emoji-row {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-top: 15px;
+    letter-spacing: 8px;
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -20px;
+    z-index: 5;
+    opacity: 0.85;
+    animation: confettiFall linear infinite;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.9; }
+    80% { opacity: 0.7; }
+    100% { transform: translateY(105vh) rotate(720deg) scale(0.5); opacity: 0; }
+  }
+
+  .done-message { display: none; }
+  .done-message h1 { font-size: clamp(2.5rem, 7vw, 4rem); margin-bottom: 20px; }
+  .done-message .emoji-row { font-size: 3rem; letter-spacing: 12px; }
+
+  body.school-over .container { display: none; }
+  body.school-over .done-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Trish's Countdown<br>to Freedom</h1>
+  <div class="subtitle">Chesapeake Public Schools, Class of Never Again</div>
+
+  <div class="school-days-box">
+    <div class="school-days-label">School Days Left</div>
+    <div class="school-days-number" id="schoolDays">--</div>
+    <div class="school-days-unit">days</div>
+  </div>
+
+  <div class="countdown-row">
+    <div class="countdown-item">
+      <div class="countdown-num" id="cDays">--</div>
+      <div class="countdown-label">Days</div>
+    </div>
+    <div class="countdown-item">
+      <div class="countdown-num" id="cHours">--</div>
+      <div class="countdown-label">Hours</div>
+    </div>
+    <div class="countdown-item">
+      <div class="countdown-num" id="cMinutes">--</div>
+      <div class="countdown-label">Minutes</div>
+    </div>
+    <div class="countdown-item">
+      <div class="countdown-num" id="cSeconds">--</div>
+      <div class="countdown-label">Seconds</div>
+    </div>
+  </div>
+
+  <div class="message">
+    Every bell that rings is one you'll never have to answer again.
+    <br>You did the hard thing, Trish. Now go do the next thing.
+  </div>
+  <div class="emoji-row">🎉🍎✨🥂🎊</div>
+</div>
+
+<div class="done-message">
+  <h1>YOU'RE FREE, TRISH!</h1>
+  <p style="font-size:1.4rem; margin-bottom:20px; font-weight:700;">No more bells. No more lesson plans. No more cafeteria duty.</p>
+  <div class="emoji-row">🎉🥳🍾🎊✨🎈</div>
+</div>
+
+<script>
+  // ── Chesapeake Public Schools 2025-2026 ──
+  // Last day for students: June 16, 2026
+  // Countdown target: end of school day June 16 (3:30 PM ET)
+  const LAST_DAY = new Date('2026-06-16T15:30:00-04:00');
+
+  // Non-student weekdays (holidays, teacher workdays, breaks, etc.)
+  // from the start of school through June 16
+  const NON_STUDENT_DAYS = new Set([
+    // Labor Day
+    '2025-09-01',
+    // Election Day (teacher workday)
+    '2025-11-03',
+    // In-service day
+    '2025-11-04',
+    // Thanksgiving
+    '2025-11-26', '2025-11-27', '2025-11-28',
+    // Winter Break
+    '2025-12-22', '2025-12-23', '2025-12-24', '2025-12-25', '2025-12-26',
+    '2025-12-29', '2025-12-30', '2025-12-31', '2026-01-01', '2026-01-02',
+    // MLK Jr. Day
+    '2026-01-19',
+    // Teacher workday / in-service
+    '2026-01-29', '2026-01-30',
+    // Presidents Day
+    '2026-02-16',
+    // Spring Break (April 6-10)
+    '2026-04-06', '2026-04-07', '2026-04-08', '2026-04-09', '2026-04-10',
+    // Teacher workday
+    '2026-05-01',
+    // Memorial Day
+    '2026-05-25',
+  ]);
+
+  function dateStr(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function isSchoolDay(d) {
+    const dow = d.getDay();
+    if (dow === 0 || dow === 6) return false; // weekend
+    return !NON_STUDENT_DAYS.has(dateStr(d));
+  }
+
+  function countSchoolDaysLeft() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const lastDate = new Date(2026, 5, 16); // June 16, 2026
+    let count = 0;
+    let d = new Date(today);
+    // Include today if it's a school day and school hasn't ended yet
+    while (d <= lastDate) {
+      if (isSchoolDay(d)) count++;
+      d.setDate(d.getDate() + 1);
+    }
+    return count;
+  }
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = LAST_DAY - now;
+
+    if (diff <= 0) {
+      document.body.classList.add('school-over');
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById('cDays').textContent = days;
+    document.getElementById('cHours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('cMinutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('cSeconds').textContent = String(seconds).padStart(2, '0');
+
+    document.getElementById('schoolDays').textContent = countSchoolDaysLeft();
+  }
+
+  // ── Confetti ──
+  const COLORS = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#01a3a4','#f368e0','#ff9f43','#00d2d3'];
+
+  function createConfettiPiece() {
+    const el = document.createElement('div');
+    el.classList.add('confetti-piece');
+    const size = Math.random() * 8 + 6;
+    el.style.width = size + 'px';
+    el.style.height = size * (Math.random() * 0.6 + 0.4) + 'px';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDuration = (Math.random() * 4 + 4) + 's';
+    el.style.animationDelay = (Math.random() * 6) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 12000);
+  }
+
+  // Initial burst
+  for (let i = 0; i < 40; i++) createConfettiPiece();
+  // Ongoing confetti
+  setInterval(() => { for (let i = 0; i < 3; i++) createConfettiPiece(); }, 800);
+
+  // Start
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
