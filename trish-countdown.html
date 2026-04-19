@@ -130,7 +130,7 @@
     justify-content: space-between;
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.6rem;
-    color: #666;
+    color: #e0e0e0;
     margin-top: 5px;
     letter-spacing: 1px;
   }
@@ -160,7 +160,7 @@
 
   .school-days-label {
     font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+    font-size: clamp(0.75rem, 2.2vw, 0.85rem);
     text-transform: uppercase;
     letter-spacing: 5px;
     color: #888;
@@ -210,7 +210,7 @@
     margin: 0 auto 14px;
     text-align: left;
     font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.55rem, 1.4vw, 0.7rem);
+    font-size: clamp(0.75rem, 2.2vw, 0.85rem);
     line-height: 1.9;
     color: #555;
     min-height: 9.5em;
@@ -226,20 +226,21 @@
   .sys-log .log-line {
     opacity: 0;
     transition: opacity 0.4s ease;
-    white-space: nowrap;
-    overflow: hidden;
+    white-space: normal;
+    word-wrap: break-word;
   }
 
   .sys-log .log-line.visible {
     opacity: 1;
   }
 
-  .sys-log .log-prefix { color: #666; }
-  .sys-log .log-cmd { color: #777; }
+  .sys-log .log-prefix { color: #777; }
+  .sys-log .log-cmd { color: #888; }
   .sys-log .log-bright { color: #e0e0e0; text-shadow: 0 0 6px rgba(255,255,255,0.15); }
   .sys-log .log-fire { color: #ff6600; text-shadow: 0 0 8px rgba(255,100,0,0.4); }
   .sys-log .log-purple { color: #c850ff; text-shadow: 0 0 8px rgba(200,80,255,0.4); }
-  .sys-log .log-dim { color: #555; }
+  .sys-log .log-dim { color: #777; }
+  .sys-log .log-teal { color: #00ffc8; text-shadow: 0 0 8px rgba(0,255,200,0.4); }
 
   /* Confetti */
   .confetti-piece {
@@ -323,7 +324,7 @@
   <div class="center-piece">
     <canvas id="ringCanvas" width="340" height="340"></canvas>
     <div class="school-days-inner">
-      <div class="school-days-label">School Days Remaining</div>
+      <div class="school-days-label">Days Remaining</div>
       <div class="school-days-number" id="schoolDays">--</div>
       <div class="ring-label">9-Year Cycle Closing</div>
     </div>
@@ -334,14 +335,19 @@
 
 <div class="sys-log" id="sysLog">
   <div class="log-line" data-delay="800"><span class="log-prefix">></span> <span class="log-cmd">loading fire_horse_2026.sys</span> — <span class="log-fire">once every 60 years</span></div>
-  <div class="log-line" data-delay="2600"><span class="log-prefix">></span> <span class="log-bright">this ending didn't come with drama</span> — <span class="log-dim">it came with certainty</span></div>
-  <div class="log-line" data-delay="4800"><span class="log-prefix">></span> <span class="log-cmd">cycle_9:</span> <span class="log-purple">nine years of lessons — releasing</span></div>
-  <div class="log-line" data-delay="7000"><span class="log-prefix">></span> <span class="log-bright">the body knew before the mind caught up</span></div>
-  <div class="log-line" data-delay="9200"><span class="log-prefix">></span> <span class="log-dim">tolerance_threshold:</span> <span class="log-fire">exceeded</span> — <span class="log-dim">truth louder than hope</span></div>
-  <div class="log-line" data-delay="11600"><span class="log-prefix">></span> <span class="log-cmd">what's complete is already loosening its grip</span></div>
-  <div class="log-line" data-delay="13800"><span class="log-prefix">></span> <span class="log-fire">the fire horse isn't here to process</span> — <span class="log-bright">he's here to move</span></div>
-  <div class="log-line" data-delay="16200"><span class="log-prefix">></span> <span class="log-dim">what's next doesn't need permission</span> — <span class="log-purple">only space</span></div>
-  <div class="log-line" data-delay="18800"><span class="log-prefix">></span> <span class="log-bright">you're not late, Trish</span> — <span class="log-fire">you're right on time</span></div>
+  <div class="log-line" data-delay="3200"><span class="log-prefix">></span> <span class="log-bright">what's ending isn't asking permission</span> — <span class="log-teal">it's asking for release</span></div>
+  <div class="log-line" data-delay="5600"><span class="log-prefix">></span> <span class="log-bright">the body knew before the mind caught up</span></div>
+  <div class="log-line" data-delay="7800"><span class="log-prefix">></span> <span class="log-dim">tolerance_threshold:</span> <span class="log-fire">exceeded</span> — <span class="log-dim">truth louder than hope</span></div>
+  <div class="log-line" data-delay="10200"><span class="log-prefix">></span> <span class="log-bright">i am not rebuilding my old life</span> — <span class="log-fire">i'm creating a new one</span></div>
+  <div class="log-line" data-delay="12600"><span class="log-prefix">></span> <span class="log-dim">from scratch</span> — <span class="log-dim">from truth</span> — <span class="log-purple">from a version of me that didn't exist before now</span></div>
+  <div class="log-line" data-delay="15200"><span class="log-prefix">></span> <span class="log-fire">the old path is burning</span> — <span class="log-dim">and i don't get to walk it anymore</span></div>
+  <div class="log-line" data-delay="17800"><span class="log-prefix">></span> <span class="log-bright">i'm perceiving in higher resolution than the systems around me can support</span></div>
+  <div class="log-line" data-delay="20400"><span class="log-prefix">></span> <span class="log-fire">this energy doesn't wait for permission</span> — <span class="log-bright">it moves because it must</span></div>
+  <div class="log-line" data-delay="22800"><span class="log-prefix">></span> <span class="log-cmd">what's complete is already loosening its grip</span></div>
+  <div class="log-line" data-delay="25200"><span class="log-prefix">></span> <span class="log-dim">fire_horse.status:</span> <span class="log-fire">wild</span> — <span class="log-fire">uncontained</span> — <span class="log-fire">unapologetic</span></div>
+  <div class="log-line" data-delay="27800"><span class="log-prefix">></span> <span class="log-bright">thank you to every version of me who carried this until i could</span></div>
+  <div class="log-line" data-delay="30400"><span class="log-prefix">></span> <span class="log-cmd">cycle_9:</span> <span class="log-purple">nine years of lessons — releasing</span></div>
+  <div class="log-line" data-delay="33000"><span class="log-prefix">></span> <span class="log-bright">let it go</span> — <span class="log-bright">let it land</span> — <span class="log-teal">let the new me lead</span></div>
 </div>
 
 <div class="done-message">
@@ -492,7 +498,7 @@
     });
 
     // Loop: fade all out and replay after full sequence
-    const totalDuration = 24000;
+    const totalDuration = 38000;
     setInterval(() => {
       lines.forEach(line => line.classList.remove('visible'));
       lines.forEach(line => {
