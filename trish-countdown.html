@@ -64,7 +64,7 @@
   /* Glitch title */
   h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.5rem, 4.5vw, 2.6rem);
+    font-size: clamp(1.4rem, 4.5vw, 2.4rem);
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 6px;
@@ -89,10 +89,10 @@
 
   .subtitle {
     font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+    font-size: clamp(0.6rem, 1.6vw, 0.8rem);
     color: #00ffc8;
     letter-spacing: 3px;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
     opacity: 0.7;
   }
   .subtitle::before { content: '> '; color: #ff00de; }
@@ -104,116 +104,10 @@
   }
   @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
-  /* Main school days display */
-  .school-days-box {
-    background: rgba(0,255,200,0.04);
-    border: 1px solid rgba(0,255,200,0.2);
-    border-radius: 4px;
-    padding: 20px 44px;
-    margin: 0 auto 20px;
-    display: inline-block;
-    position: relative;
-    box-shadow:
-      0 0 15px rgba(0,255,200,0.1),
-      inset 0 0 15px rgba(0,255,200,0.05);
-  }
-
-  .school-days-box::before,
-  .school-days-box::after {
-    content: '';
-    position: absolute;
-    width: 20px; height: 20px;
-    border-color: #00ffc8;
-    border-style: solid;
-  }
-  .school-days-box::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-  .school-days-box::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
-
-  .school-days-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.65rem, 1.8vw, 0.8rem);
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    color: #888;
-    margin-bottom: 4px;
-  }
-
-  .school-days-number {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(4rem, 12vw, 7rem);
-    font-weight: 900;
-    line-height: 1;
-    color: #00ffc8;
-    text-shadow:
-      0 0 20px rgba(0,255,200,0.6),
-      0 0 60px rgba(0,255,200,0.3),
-      0 0 100px rgba(0,255,200,0.15);
-    animation: numberPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes numberPulse {
-    0%, 100% { text-shadow: 0 0 20px rgba(0,255,200,0.6), 0 0 60px rgba(0,255,200,0.3), 0 0 100px rgba(0,255,200,0.15); }
-    50% { text-shadow: 0 0 30px rgba(0,255,200,0.8), 0 0 80px rgba(0,255,200,0.5), 0 0 120px rgba(0,255,200,0.25); }
-  }
-
-  .school-days-unit {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    text-transform: uppercase;
-    letter-spacing: 8px;
-    color: #666;
-    margin-top: 2px;
-  }
-
-  /* Status bar */
-  .status-bar {
-    display: flex;
-    justify-content: center;
-    gap: clamp(14px, 3vw, 30px);
-    flex-wrap: wrap;
-    margin-bottom: 18px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.55rem, 1.4vw, 0.7rem);
-    letter-spacing: 1px;
-    color: #555;
-  }
-
-  .status-item span { color: #00ffc8; }
-  .status-item .fire { color: #ff6600; text-shadow: 0 0 6px rgba(255,100,0,0.4); }
-  .status-item .purple { color: #cc44ff; text-shadow: 0 0 6px rgba(170,0,255,0.3); }
-
-  /* Message */
-  .message {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(0.9rem, 2.2vw, 1.15rem);
-    font-weight: 600;
-    color: #888;
-    max-width: 520px;
-    margin: 0 auto;
-    line-height: 1.7;
-    letter-spacing: 0.5px;
-  }
-
-  .message em {
-    font-style: normal;
-  }
-  .message em.cyan {
-    color: #00ffc8;
-    text-shadow: 0 0 8px rgba(0,255,200,0.3);
-  }
-  .message em.fire {
-    color: #ff6600;
-    text-shadow: 0 0 8px rgba(255,100,0,0.3);
-  }
-  .message em.purple {
-    color: #cc44ff;
-    text-shadow: 0 0 8px rgba(170,0,255,0.3);
-  }
-
-  /* Progress bar */
+  /* Progress bar — moved to top */
   .progress-wrapper {
     max-width: 500px;
-    margin: 20px auto 0;
+    margin: 0 auto 22px;
   }
 
   .progress-track {
@@ -239,6 +133,137 @@
     color: #444;
     margin-top: 5px;
     letter-spacing: 1px;
+  }
+
+  /* Center area: ring + number */
+  .center-piece {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  /* Orbital ring canvas */
+  #ringCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .school-days-inner {
+    position: relative;
+    z-index: 1;
+    padding: 40px 50px;
+  }
+
+  .school-days-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .school-days-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(3.5rem, 11vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #00ffc8;
+    text-shadow:
+      0 0 20px rgba(0,255,200,0.6),
+      0 0 60px rgba(0,255,200,0.3),
+      0 0 100px rgba(0,255,200,0.15);
+    animation: numberPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes numberPulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(0,255,200,0.6), 0 0 60px rgba(0,255,200,0.3), 0 0 100px rgba(0,255,200,0.15); }
+    50% { text-shadow: 0 0 30px rgba(0,255,200,0.8), 0 0 80px rgba(0,255,200,0.5), 0 0 120px rgba(0,255,200,0.25); }
+  }
+
+  .school-days-unit {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  .ring-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    color: #665599;
+    letter-spacing: 2px;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: center;
+    gap: clamp(14px, 3vw, 30px);
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.5rem, 1.3vw, 0.65rem);
+    letter-spacing: 1px;
+    color: #555;
+  }
+
+  .status-item span { color: #00ffc8; }
+  .status-item .fire { color: #ff6600; text-shadow: 0 0 6px rgba(255,100,0,0.4); }
+  .status-item .purple { color: #cc44ff; text-shadow: 0 0 6px rgba(170,0,255,0.3); }
+
+  /* System log */
+  .sys-log {
+    max-width: 480px;
+    margin: 0 auto 14px;
+    text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.55rem, 1.4vw, 0.7rem);
+    line-height: 1.9;
+    color: #555;
+    min-height: 7.6em;
+  }
+
+  .sys-log .log-line {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .sys-log .log-line.visible {
+    opacity: 1;
+  }
+
+  .sys-log .log-prefix { color: #ff00de; }
+  .sys-log .log-fire { color: #ff6600; text-shadow: 0 0 4px rgba(255,100,0,0.3); }
+  .sys-log .log-cyan { color: #00ffc8; }
+  .sys-log .log-dim { color: #444; }
+
+  /* Message */
+  .message {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    font-weight: 600;
+    color: #777;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  .message em {
+    font-style: normal;
+    color: #00ffc8;
+    text-shadow: 0 0 8px rgba(0,255,200,0.3);
   }
 
   /* Confetti */
@@ -285,9 +310,9 @@
   }
   .done-message p {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #00ffc8;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   body.school-over .container { display: none; }
@@ -309,30 +334,6 @@
   <h1>Trish // System Exit</h1>
   <div class="subtitle">initiating classroom_escape_protocol.exe</div>
 
-  <div class="school-days-box">
-    <div class="school-days-label">School Days Remaining</div>
-    <div class="school-days-number" id="schoolDays">--</div>
-    <div class="school-days-unit">days</div>
-  </div>
-
-  <div class="status-bar">
-    <div class="status-item">TARGET: <span>2026.06.16</span></div>
-    <div class="status-item">STATUS: <span>ESCAPING</span></div>
-    <div class="status-item">CYCLE: <span class="purple">9 → 1</span></div>
-    <div class="status-item">ZODIAC: <span class="fire">火馬 FIRE HORSE</span></div>
-  </div>
-
-  <div class="message">
-    Every bell that rings is one you'll never have to answer again.<br><br>
-    <em class="purple">Nine years of lessons — released.</em>
-    Everything that needed to break, broke.<br><br>
-    <em class="fire">2026 is the Year of the Fire Horse</em> —
-    it comes once every 60 years.
-    Unstoppable forward motion. Courage that burns through obstacles.
-    The rarest, wildest energy in the zodiac.<br><br>
-    You did the hard thing, <em class="cyan">Trish</em>. What's next is entirely new.
-  </div>
-
   <div class="progress-wrapper">
     <div class="progress-track">
       <div class="progress-fill" id="progressFill" style="width:0%"></div>
@@ -343,13 +344,45 @@
       <span>JUN 16 2026</span>
     </div>
   </div>
+
+  <div class="center-piece">
+    <canvas id="ringCanvas" width="300" height="300"></canvas>
+    <div class="school-days-inner">
+      <div class="school-days-label">School Days Remaining</div>
+      <div class="school-days-number" id="schoolDays">--</div>
+      <div class="school-days-unit">days</div>
+      <div class="ring-label">9-year cycle closing</div>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-item">TARGET: <span>2026.06.16</span></div>
+    <div class="status-item">STATUS: <span>ESCAPING</span></div>
+    <div class="status-item">CYCLE: <span class="purple">YEAR 9 → 1</span></div>
+    <div class="status-item">ZODIAC: <span class="fire">火馬 FIRE HORSE</span></div>
+  </div>
+
+  <div class="sys-log" id="sysLog">
+    <div class="log-line" data-delay="800"><span class="log-prefix">></span> <span class="log-fire">loading fire_horse_2026.sys</span> <span class="log-dim">— once every 60 years</span></div>
+    <div class="log-line" data-delay="2200"><span class="log-prefix">></span> <span class="log-fire">unstoppable forward motion initialized</span></div>
+    <div class="log-line" data-delay="3800"><span class="log-prefix">></span> <span class="log-fire">courage_that_burns_through_obstacles</span> <span class="log-cyan">LOADED</span></div>
+    <div class="log-line" data-delay="5600"><span class="log-prefix">></span> cycle_9: <span class="log-cyan">COMPLETING</span> <span class="log-dim">— nine years of lessons releasing</span></div>
+    <div class="log-line" data-delay="7400"><span class="log-prefix">></span> everything that needed to break <span class="log-cyan">BROKE</span></div>
+    <div class="log-line" data-delay="9200"><span class="log-prefix">></span> <span class="log-fire">the rarest, wildest energy in the zodiac</span> <span class="log-dim">— status: ACTIVE</span></div>
+    <div class="log-line" data-delay="11200"><span class="log-prefix">></span> what's next is <span class="log-cyan">entirely new</span></div>
+  </div>
+
+  <div class="message">
+    Every bell that rings is one you'll never have to answer again.<br>
+    You did the hard thing, <em>Trish</em>. Now go do the next thing.
+  </div>
 </div>
 
 <div class="done-message">
   <h1>PROCESS COMPLETE</h1>
   <p>> classroom_escape_protocol.exe finished successfully</p>
   <p>> YOU'RE FREE, TRISH.</p>
-  <p style="color:#ff6600; margin-top:10px;">> year of the fire horse has begun</p>
+  <p style="color:#ff6600; margin-top:10px;">> fire_horse_2026.sys — FULLY LOADED</p>
   <p style="color:#cc44ff;">> 9-year cycle complete. new cycle initialized.</p>
   <p style="color:#ff00de; margin-top:10px;">> no more bells. no more lesson plans. no more cafeteria duty.</p>
 </div>
@@ -395,6 +428,115 @@
     columns = Math.floor(canvas.width / fontSize);
     drops = Array(columns).fill(1);
   });
+
+  // ═══════════════════════════════════════
+  //  ORBITAL RING — 9-year cycle
+  // ═══════════════════════════════════════
+  const ringCanvas = document.getElementById('ringCanvas');
+  const ringCtx = ringCanvas.getContext('2d');
+  const RING_SIZE = 300;
+  const CENTER = RING_SIZE / 2;
+  const RADIUS = 130;
+  const SEG_COUNT = 9;
+  const GAP = 0.04; // radians gap between segments
+  const SEG_ARC = (2 * Math.PI / SEG_COUNT) - GAP;
+  const START_OFFSET = -Math.PI / 2; // start from top
+
+  // 8 segments are complete (dark/spent), segment 9 is active and dimming
+  let ringRotation = 0;
+
+  function drawRing(progress) {
+    ringCtx.clearRect(0, 0, RING_SIZE, RING_SIZE);
+
+    for (let i = 0; i < SEG_COUNT; i++) {
+      const startAngle = START_OFFSET + i * (SEG_ARC + GAP) + ringRotation;
+      const endAngle = startAngle + SEG_ARC;
+
+      ringCtx.beginPath();
+      ringCtx.arc(CENTER, CENTER, RADIUS, startAngle, endAngle);
+      ringCtx.lineWidth = 3;
+
+      if (i < 8) {
+        // Completed years — dim purple, spent
+        ringCtx.strokeStyle = 'rgba(100, 50, 140, 0.2)';
+        // Small dot at segment center
+        ringCtx.stroke();
+        // Add a tiny "closed" dot
+        const midAngle = (startAngle + endAngle) / 2;
+        const dotX = CENTER + Math.cos(midAngle) * RADIUS;
+        const dotY = CENTER + Math.sin(midAngle) * RADIUS;
+        ringCtx.beginPath();
+        ringCtx.arc(dotX, dotY, 2, 0, Math.PI * 2);
+        ringCtx.fillStyle = 'rgba(100, 50, 140, 0.35)';
+        ringCtx.fill();
+      } else {
+        // Year 9 — the active segment, dimming based on school year progress
+        const remaining = 1 - progress;
+        const alpha = 0.3 + remaining * 0.7;
+        const glow = remaining * 20;
+
+        // Draw the full arc dim
+        ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha * 0.3})`;
+        ringCtx.stroke();
+
+        // Draw the remaining portion bright
+        const activeEnd = startAngle + SEG_ARC * remaining;
+        ringCtx.beginPath();
+        ringCtx.arc(CENTER, CENTER, RADIUS, startAngle, activeEnd);
+        ringCtx.lineWidth = 4;
+        ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha})`;
+        ringCtx.shadowColor = `rgba(200, 80, 255, ${alpha * 0.8})`;
+        ringCtx.shadowBlur = glow;
+        ringCtx.stroke();
+        ringCtx.shadowBlur = 0;
+
+        // Bright dot at the leading edge
+        const edgeX = CENTER + Math.cos(activeEnd) * RADIUS;
+        const edgeY = CENTER + Math.sin(activeEnd) * RADIUS;
+        ringCtx.beginPath();
+        ringCtx.arc(edgeX, edgeY, 3, 0, Math.PI * 2);
+        ringCtx.fillStyle = `rgba(200, 80, 255, ${alpha})`;
+        ringCtx.shadowColor = `rgba(200, 80, 255, 0.8)`;
+        ringCtx.shadowBlur = 12;
+        ringCtx.fill();
+        ringCtx.shadowBlur = 0;
+      }
+    }
+
+    // Subtle outer glow ring
+    ringCtx.beginPath();
+    ringCtx.arc(CENTER, CENTER, RADIUS + 10, 0, Math.PI * 2);
+    ringCtx.strokeStyle = 'rgba(200, 80, 255, 0.04)';
+    ringCtx.lineWidth = 1;
+    ringCtx.stroke();
+
+    ringRotation += 0.001; // very slow rotation
+  }
+
+  // ═══════════════════════════════════════
+  //  SYSTEM LOG — typing reveal
+  // ═══════════════════════════════════════
+  function initSysLog() {
+    const lines = document.querySelectorAll('#sysLog .log-line');
+    lines.forEach(line => {
+      const delay = parseInt(line.dataset.delay) || 0;
+      setTimeout(() => {
+        line.classList.add('visible');
+      }, delay);
+    });
+
+    // Loop: fade all out and replay after full sequence
+    const totalDuration = 14000;
+    setInterval(() => {
+      lines.forEach(line => line.classList.remove('visible'));
+      lines.forEach(line => {
+        const delay = parseInt(line.dataset.delay) || 0;
+        setTimeout(() => line.classList.add('visible'), delay);
+      });
+    }, totalDuration);
+  }
+
+  initSysLog();
 
   // ═══════════════════════════════════════
   //  SCHOOL CALENDAR
@@ -444,6 +586,8 @@
     return countSchoolDays(today, new Date(2026, 5, 16));
   }
 
+  let currentProgress = 0;
+
   function updateCountdown() {
     const now = new Date();
     const diff = LAST_DAY - now;
@@ -459,10 +603,20 @@
     document.getElementById('schoolDays').textContent = left;
 
     const completed = TOTAL_SCHOOL_DAYS - left;
-    const pct = Math.min(100, Math.round((completed / TOTAL_SCHOOL_DAYS) * 100));
+    currentProgress = Math.min(1, completed / TOTAL_SCHOOL_DAYS);
+    const pct = Math.round(currentProgress * 100);
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressPct').textContent = pct + '%';
   }
+
+  // ═══════════════════════════════════════
+  //  ANIMATION LOOP (ring)
+  // ═══════════════════════════════════════
+  function animateRing() {
+    drawRing(currentProgress);
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
 
   // ═══════════════════════════════════════
   //  CONFETTI (neon edition)
@@ -492,13 +646,13 @@
   // ═══════════════════════════════════════
   //  EMBER PARTICLES
   // ═══════════════════════════════════════
-  const FIRE = ['#ff6600','#ff4400','#ff8800','#ff2200','#ffaa00','#ff0044'];
+  const FIRE_COLORS = ['#ff6600','#ff4400','#ff8800','#ff2200','#ffaa00','#ff0044'];
 
   function createEmber() {
     const el = document.createElement('div');
     el.classList.add('ember');
     const size = Math.random() * 4 + 2;
-    const color = FIRE[Math.floor(Math.random() * FIRE.length)];
+    const color = FIRE_COLORS[Math.floor(Math.random() * FIRE_COLORS.length)];
     el.style.width = size + 'px';
     el.style.height = size + 'px';
     el.style.left = Math.random() * 100 + 'vw';
