@@ -298,7 +298,7 @@
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00ffc8, #ff00de);
+    background: linear-gradient(90deg, #00ffc8, #ff00de, #ff6600);
     border-radius: 2px;
     box-shadow: 0 0 12px rgba(0,255,200,0.4);
     transition: width 1s ease;
@@ -312,6 +312,96 @@
     color: #444;
     margin-top: 6px;
     letter-spacing: 1px;
+  }
+
+  /* Cycle panel */
+  .cycle-panel {
+    margin-top: 35px;
+    display: flex;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 24px);
+    flex-wrap: wrap;
+  }
+
+  .cycle-card {
+    background: rgba(255,100,0,0.04);
+    border: 1px solid rgba(255,100,0,0.15);
+    border-radius: 4px;
+    padding: 18px 22px;
+    max-width: 220px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cycle-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+
+  .cycle-card.fire::before {
+    background: linear-gradient(180deg, #ff6600, #ff0044, #ff6600);
+    box-shadow: 0 0 8px rgba(255,100,0,0.4);
+  }
+
+  .cycle-card.nine::before {
+    background: linear-gradient(180deg, #aa00ff, #ff00de, #aa00ff);
+    box-shadow: 0 0 8px rgba(170,0,255,0.4);
+  }
+
+  .cycle-icon {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .cycle-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .cycle-card.fire .cycle-title {
+    color: #ff6600;
+    text-shadow: 0 0 8px rgba(255,100,0,0.4);
+  }
+
+  .cycle-card.nine .cycle-title {
+    color: #cc44ff;
+    text-shadow: 0 0 8px rgba(170,0,255,0.3);
+  }
+
+  .cycle-desc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.55rem, 1.5vw, 0.68rem);
+    color: #777;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  .cycle-desc strong {
+    color: #bbb;
+    font-weight: normal;
+  }
+
+  /* Ember particles */
+  .ember {
+    position: fixed;
+    bottom: -10px;
+    z-index: 4;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: emberRise linear infinite;
+  }
+
+  @keyframes emberRise {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-110vh) scale(0); opacity: 0; }
   }
 
   /* Done state */
@@ -382,12 +472,36 @@
   <div class="status-bar">
     <div class="status-item">TARGET: <span>2026.06.16</span></div>
     <div class="status-item">STATUS: <span>ESCAPING</span></div>
-    <div class="status-item">MORALE: <span>MAXIMUM</span></div>
+    <div class="status-item">CYCLE: <span>9 → 1</span></div>
+    <div class="status-item">ZODIAC: <span>火馬 FIRE HORSE</span></div>
   </div>
 
   <div class="message">
     Every bell that rings is one you'll never have to answer again.<br>
     You did the hard thing, <em>Trish</em>. Now go do the next thing.
+  </div>
+
+  <div class="cycle-panel">
+    <div class="cycle-card fire">
+      <div class="cycle-icon">🐎</div>
+      <div class="cycle-title">Year of the Fire Horse</div>
+      <div class="cycle-desc">
+        <strong>2026</strong> — comes once every 60 years.<br>
+        Unstoppable forward motion.<br>
+        Courage that burns through obstacles.<br>
+        The rarest, wildest energy in the zodiac.
+      </div>
+    </div>
+    <div class="cycle-card nine">
+      <div class="cycle-icon">9</div>
+      <div class="cycle-title">The 9-Year Complete</div>
+      <div class="cycle-desc">
+        <strong>End of the cycle.</strong><br>
+        Nine years of lessons — released.<br>
+        Everything that needed to break, broke.<br>
+        What's next is entirely new.
+      </div>
+    </div>
   </div>
 
   <div class="progress-wrapper">
@@ -406,6 +520,8 @@
   <h1>PROCESS COMPLETE</h1>
   <p>> classroom_escape_protocol.exe finished successfully</p>
   <p>> YOU'RE FREE, TRISH.</p>
+  <p style="color:#ff6600; margin-top:10px;">> year of the fire horse has begun</p>
+  <p style="color:#cc44ff;">> 9-year cycle complete. new cycle initialized.</p>
   <p style="color:#ff00de; margin-top:10px;">> no more bells. no more lesson plans. no more cafeteria duty.</p>
 </div>
 
@@ -554,6 +670,30 @@
 
   for (let i = 0; i < 50; i++) createConfettiPiece();
   setInterval(() => { for (let i = 0; i < 3; i++) createConfettiPiece(); }, 700);
+
+  // ═══════════════════════════════════════
+  //  EMBER PARTICLES (rising fire energy)
+  // ═══════════════════════════════════════
+  const FIRE = ['#ff6600','#ff4400','#ff8800','#ff2200','#ffaa00','#ff0044'];
+
+  function createEmber() {
+    const el = document.createElement('div');
+    el.classList.add('ember');
+    const size = Math.random() * 4 + 2;
+    const color = FIRE[Math.floor(Math.random() * FIRE.length)];
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = color;
+    el.style.boxShadow = `0 0 ${size + 2}px ${color}, 0 0 ${size + 6}px ${color}`;
+    el.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    el.style.animationDelay = (Math.random() * 4) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 14000);
+  }
+
+  for (let i = 0; i < 20; i++) createEmber();
+  setInterval(() => { createEmber(); }, 500);
 
   // Start
   updateCountdown();
