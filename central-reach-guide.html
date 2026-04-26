@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Central Reach Guide</title>
+<style>
+:root {
+  --bg: #f5f7fa;
+  --sidebar-bg: #1e2a3a;
+  --sidebar-text: #c8d6e5;
+  --sidebar-active: #ffffff;
+  --sidebar-hover: #2e3f55;
+  --sidebar-accent: #3498db;
+  --content-bg: #ffffff;
+  --text: #2c3e50;
+  --text-light: #6c7a89;
+  --border: #e1e8ed;
+  --accent: #2e86c1;
+  --accent-light: #d6eaf8;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --code-bg: #f0f3f5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+  transition: transform 0.3s;
+}
+
+.sidebar-header {
+  padding: 20px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-header h1 {
+  font-size: 1.05em;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.sidebar-header p {
+  font-size: 0.75em;
+  opacity: 0.6;
+}
+
+.sidebar-search {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-search input {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.82em;
+  outline: none;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,0.35); }
+.sidebar-search input:focus { border-color: var(--sidebar-accent); background: rgba(255,255,255,0.12); }
+
+.nav-group { padding: 8px 0; }
+.nav-group-title {
+  padding: 6px 18px;
+  font-size: 0.68em;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.35);
+  font-weight: 700;
+}
+
+.nav-item {
+  display: block;
+  padding: 7px 18px 7px 28px;
+  font-size: 0.83em;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.35;
+}
+.nav-item:hover { background: var(--sidebar-hover); color: white; }
+.nav-item.active {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-active);
+  border-left-color: var(--sidebar-accent);
+  font-weight: 600;
+}
+.nav-item.sub { padding-left: 42px; font-size: 0.78em; }
+.nav-item.hidden { display: none; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  flex: 1;
+  margin-left: 280px;
+  padding: 0;
+}
+
+.topbar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar .breadcrumb {
+  font-size: 0.82em;
+  color: var(--text-light);
+}
+.topbar .breadcrumb span { color: var(--text); font-weight: 600; }
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.4em;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.content {
+  max-width: 780px;
+  padding: 32px;
+}
+
+.article { display: none; }
+.article.active { display: block; }
+
+.article h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+.article h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text);
+  margin: 24px 0 10px;
+}
+
+.article p { margin: 10px 0; font-size: 0.92em; }
+
+/* Steps */
+.step {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+  align-items: flex-start;
+}
+.step-num {
+  flex: 0 0 26px;
+  height: 26px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+.step-text { flex: 1; font-size: 0.9em; }
+.step-text strong { color: var(--sidebar-bg); }
+
+/* Callouts */
+.callout {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 0.88em;
+}
+.callout-tip { background: #eafaf1; border-left: 4px solid var(--success); }
+.callout-warning { background: #fef9e7; border-left: 4px solid var(--warning); }
+.callout-danger { background: #fdedec; border-left: 4px solid var(--danger); }
+.callout-info { background: var(--accent-light); border-left: 4px solid var(--accent); }
+.callout strong { font-weight: 700; }
+
+/* Tables */
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.85em;
+}
+.ref-table th {
+  background: var(--sidebar-bg);
+  color: white;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+.ref-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.ref-table tr:nth-child(even) td { background: #f8f9fa; }
+
+/* SVG diagrams */
+.diagram-wrap {
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.diagram-wrap svg { display: block; width: 100%; height: auto; }
+.diagram-caption {
+  padding: 8px 12px;
+  font-size: 0.78em;
+  color: var(--text-light);
+  background: #f8f9fa;
+  border-top: 1px solid var(--border);
+}
+
+/* Keyboard shortcut style */
+.key {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: monospace;
+  color: var(--text);
+}
+
+/* Menu path */
+.path {
+  display: inline;
+  font-size: 0.85em;
+  color: var(--text);
+  font-weight: 600;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* Decision boxes */
+.decision-box {
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 12px 0;
+  background: white;
+}
+.decision-box h4 {
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-size: 0.92em;
+}
+.decision-option {
+  display: flex;
+  gap: 8px;
+  margin: 6px 0;
+  align-items: flex-start;
+  font-size: 0.88em;
+}
+.decision-option .arr { color: var(--accent); font-weight: bold; flex-shrink: 0; }
+
+/* Icon row (for sidebar icons guide) */
+.icon-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.88em;
+}
+.icon-row .sym {
+  width: 34px;
+  height: 34px;
+  background: var(--code-bg);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); width: 270px; min-width: 270px; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .mobile-toggle { display: block; }
+  .content { padding: 20px 16px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+  .overlay.show { display: block; }
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>Central Reach Guide</h1>
+    <p>Data, Graphs & Goals</p>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="searchInput" placeholder="Search topics..." oninput="filterNav(this.value)">
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Learning Tree</div>
+    <a class="nav-item active" data-id="tree-nav" data-group="Learning Tree" onclick="showArticle('tree-nav')">Navigating the Tree</a>
+    <a class="nav-item" data-id="tree-icons" data-group="Learning Tree" onclick="showArticle('tree-icons')">Sidebar Icons Guide</a>
+    <a class="nav-item" data-id="tree-dots" data-group="Learning Tree" onclick="showArticle('tree-dots')">Bottom Dot Navigation</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Graphs</div>
+    <a class="nav-item" data-id="graph-inline" data-group="Graphs" onclick="showArticle('graph-inline')">The Inline Graph</a>
+    <a class="nav-item" data-id="graph-ltg-vs-target" data-group="Graphs" onclick="showArticle('graph-ltg-vs-target')">LTG vs. Target Graphs</a>
+    <a class="nav-item" data-id="graph-zoom" data-group="Graphs" onclick="showArticle('graph-zoom')">Zoom & Date Controls</a>
+    <a class="nav-item" data-id="graph-export" data-group="Graphs" onclick="showArticle('graph-export')">Exporting & Printing</a>
+    <a class="nav-item" data-id="graph-analysis" data-group="Graphs" onclick="showArticle('graph-analysis')">Graph Analysis Page</a>
+    <a class="nav-item" data-id="graph-trendlines" data-group="Graphs" onclick="showArticle('graph-trendlines')">Trendlines</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Data</div>
+    <a class="nav-item" data-id="data-history" data-group="Data" onclick="showArticle('data-history')">Data History Table</a>
+    <a class="nav-item" data-id="data-phase-lines" data-group="Data" onclick="showArticle('data-phase-lines')">Phase Change Lines</a>
+    <a class="nav-item" data-id="data-fix-point" data-group="Data" onclick="showArticle('data-fix-point')">Fixing a Wrong Data Point</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Goals</div>
+    <a class="nav-item" data-id="goal-details" data-group="Goals" onclick="showArticle('goal-details')">Viewing & Updating Status</a>
+    <a class="nav-item" data-id="goal-edit" data-group="Goals" onclick="showArticle('goal-edit')">Editing Goal Instructions</a>
+    <a class="nav-item" data-id="goal-add" data-group="Goals" onclick="showArticle('goal-add')">Adding New Targets</a>
+    <a class="nav-item" data-id="goal-labels" data-group="Goals" onclick="showArticle('goal-labels')">Labels & Organization</a>
+    <a class="nav-item" data-id="goal-archive" data-group="Goals" onclick="showArticle('goal-archive')">Archiving & Discontinuing</a>
+    <a class="nav-item" data-id="goal-branch-options" data-group="Goals" onclick="showArticle('goal-branch-options')">Branch Options Menu</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Documents</div>
+    <a class="nav-item" data-id="docs-files" data-group="Documents" onclick="showArticle('docs-files')">The Files Section</a>
+    <a class="nav-item" data-id="docs-search" data-group="Documents" onclick="showArticle('docs-search')">Searching & Filtering</a>
+    <a class="nav-item" data-id="docs-tree" data-group="Documents" onclick="showArticle('docs-tree')">Documents in the Tree</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Help</div>
+    <a class="nav-item" data-id="help-resources" data-group="Help" onclick="showArticle('help-resources')">CR's Own Documentation</a>
+  </div>
+
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="breadcrumb" id="breadcrumb">Learning Tree › <span>Navigating the Tree</span></div>
+  </div>
+
+  <div class="content">
+
+<!-- ===== LEARNING TREE ===== -->
+
+<div class="article active" id="art-tree-nav">
+  <h2>Navigating the Tree</h2>
+  <p>Every client's goals live in a <strong>Learning Tree</strong> — a folder structure that holds LTGs, STGs, targets, and supporting documents.</p>
+
+  <h3>Getting to a client's tree</h3>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Open the <span class="path">☰ → Clinical</span> menu.</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Search for the client by name.</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Click on their <strong>Learning Tree</strong> (listed under the Learning Trees tab).</div></div>
+
+  <h3>What you'll see</h3>
+  <p>The tree has two panels: a <strong>folder tree on the left</strong> and a <strong>content/graph area on the right</strong>. Click any item in the left tree to display it on the right. You can toggle the tree panel with <strong>"Hide Tree View"</strong> at the top.</p>
+
+  <h3>Tree dashboard (home view)</h3>
+  <p>When you first open a tree, you see the dashboard with two donut charts — <strong>Long Term Goals Mastered</strong> and <strong>Short Term Goals Mastered</strong> — plus a count of Goals Met vs. Goals In Progress. This gives a quick snapshot before drilling into individual targets.</p>
+
+  <div class="callout callout-tip">
+    For a quick audit, click <span class="path">Tree Options → Graph Analysis</span> from any tree to jump straight to the full-screen graph view where you can filter by status (Regression, No Progress, In Progress, Met).
+  </div>
+</div>
+
+<div class="article" id="art-tree-icons">
+  <h2>Sidebar Icons Guide</h2>
+  <p>When you click a target in the tree, a column of icons appears on the right edge of the graph. Here's each one:</p>
+
+  <div class="icon-row"><div class="sym">☰</div><div><strong>Description</strong> — View the target's written instructions: SD, prompting procedure, tech statement template, examples.</div></div>
+  <div class="icon-row"><div class="sym">💬</div><div><strong>Comments</strong> — Read or leave notes for the team about this target.</div></div>
+  <div class="icon-row"><div class="sym">✏️</div><div><strong>Edit</strong> — Open the Branch Details editor to change the title or description. <em>Saves immediately when you click "Done Editing."</em></div></div>
+  <div class="icon-row"><div class="sym">＋</div><div><strong>Add Branch</strong> — Create a new child branch under this item (e.g., add a new target under an STG).</div></div>
+  <div class="icon-row"><div class="sym">🕐</div><div><strong>Data History</strong> — See a table of every data point, phase change, and deletion for this target. Great for auditing.</div></div>
+  <div class="icon-row"><div class="sym">⊕</div><div><strong>Add Data</strong> — Manually enter a new data point.</div></div>
+  <div class="icon-row"><div class="sym">⊙</div><div><strong>View Goal</strong> — See and update goal details: domain, type, dates, and status.</div></div>
+
+  <div class="callout callout-info">
+    If you only see Description and Comments, you probably don't have edit rights to that tree. The tree creator or an admin can grant access.
+  </div>
+</div>
+
+<div class="article" id="art-tree-dots">
+  <h2>Bottom Dot Navigation</h2>
+  <p>At the very bottom of the graph view, a row of <strong>blue dots</strong> with left/right arrows lets you jump between targets without clicking through the tree.</p>
+
+  <p><strong>Left arrow (←)</strong> = previous target. <strong>Right arrow (→)</strong> = next target. Click any <strong>dot</strong> to jump directly — the filled/larger dot is where you are now. Hover over a dot to see the target name in a tooltip.</p>
+
+  <p>This is the fastest way to review multiple targets in sequence during supervision.</p>
+</div>
+
+<!-- ===== GRAPHS ===== -->
+
+<div class="article" id="art-graph-inline">
+  <h2>The Inline Graph</h2>
+  <p>When you click a target in the tree, the graph appears on the right. This is the view you'll use most.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="620" height="300" fill="#fafbfc"/>
+      <line x1="70" y1="30" x2="70" y2="240" stroke="#2c3e50" stroke-width="1.5"/>
+      <line x1="70" y1="240" x2="570" y2="240" stroke="#2c3e50" stroke-width="1.5"/>
+      <text x="14" y="140" text-anchor="middle" fill="#2c3e50" font-size="11" font-weight="600" transform="rotate(-90,14,140)">Percent Correct</text>
+      <text x="320" y="268" text-anchor="middle" fill="#2c3e50" font-size="11" font-weight="600">Date</text>
+      <text x="60" y="38" text-anchor="end" fill="#7f8c8d" font-size="9">100</text>
+      <text x="60" y="90" text-anchor="end" fill="#7f8c8d" font-size="9">80</text>
+      <text x="60" y="140" text-anchor="end" fill="#7f8c8d" font-size="9">60</text>
+      <text x="60" y="192" text-anchor="end" fill="#7f8c8d" font-size="9">40</text>
+      <text x="60" y="242" text-anchor="end" fill="#7f8c8d" font-size="9">20</text>
+      <line x1="70" y1="86" x2="570" y2="86" stroke="#ecf0f1"/>
+      <line x1="70" y1="136" x2="570" y2="136" stroke="#ecf0f1"/>
+      <line x1="70" y1="188" x2="570" y2="188" stroke="#ecf0f1"/>
+      <!-- Phase change -->
+      <line x1="240" y1="25" x2="240" y2="240" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="245" y="22" fill="#2c3e50" font-size="9" font-weight="600">Phase Change</text>
+      <!-- Baseline -->
+      <circle cx="120" cy="220" r="4" fill="#7f8c8d"/><circle cx="160" cy="210" r="4" fill="#7f8c8d"/><circle cx="200" cy="215" r="4" fill="#7f8c8d"/>
+      <polyline points="120,220 160,210 200,215" fill="none" stroke="#7f8c8d" stroke-width="1.5"/>
+      <!-- Intervention -->
+      <circle cx="280" cy="190" r="4" fill="#2e86c1"/><circle cx="330" cy="160" r="4" fill="#2e86c1"/><circle cx="380" cy="130" r="4" fill="#2e86c1"/><circle cx="430" cy="110" r="4" fill="#2e86c1"/><circle cx="480" cy="95" r="4" fill="#2e86c1"/><circle cx="530" cy="80" r="4" fill="#2e86c1"/>
+      <polyline points="280,190 330,160 380,130 430,110 480,95 530,80" fill="none" stroke="#2e86c1" stroke-width="1.5"/>
+      <!-- Goal line -->
+      <line x1="240" y1="86" x2="570" y2="86" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="8,4"/>
+      <text x="575" y="90" fill="#e74c3c" font-size="9" font-weight="600">Goal: 80%</text>
+      <!-- Legend -->
+      <circle cx="100" cy="286" r="4" fill="#7f8c8d"/><text x="110" y="290" fill="#2c3e50" font-size="9">Baseline</text>
+      <circle cx="175" cy="286" r="4" fill="#2e86c1"/><text x="185" y="290" fill="#2c3e50" font-size="9">Intervention</text>
+      <line x1="270" y1="286" x2="295" y2="286" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,2"/><text x="300" y="290" fill="#2c3e50" font-size="9">Goal</text>
+      <line x1="345" y1="286" x2="370" y2="286" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="6,3"/><text x="375" y="290" fill="#2c3e50" font-size="9">Phase Change</text>
+    </svg>
+    <div class="diagram-caption">A typical target-level graph showing baseline data, intervention data climbing toward the goal line.</div>
+  </div>
+
+  <h3>What's on the graph</h3>
+  <p><strong>Y-axis</strong> = what you're measuring (usually Percent Correct, but could be frequency/rate/duration depending on the target setup). <strong>X-axis</strong> = session dates. Each <strong>dot</strong> is one session's data, connected by lines.</p>
+  <p>The <strong>legend at the bottom</strong> shows: Baseline, Intervention, Generalization, Maintenance, Event, Goal, Phase Change. Different phases get different colored dots so you can see transitions.</p>
+  <p>The <strong>goal line</strong> (red dashed horizontal line) is the mastery criterion. The <strong>phase change line</strong> (vertical dashed line) marks where one phase ended and the next began.</p>
+  <p>In the top-right corner: <strong>"Target Goal — Initiated on [date]"</strong> and the status badge (In Progress, Met, etc.).</p>
+</div>
+
+<div class="article" id="art-graph-ltg-vs-target">
+  <h2>LTG vs. Target Graphs</h2>
+  <p>The graph looks different depending on whether you clicked an <strong>LTG</strong> or a <strong>Target</strong>.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="620" height="200" fill="#fafbfc"/>
+      <rect x="15" y="10" width="285" height="180" rx="8" fill="white" stroke="#2e86c1" stroke-width="2"/>
+      <text x="157" y="32" text-anchor="middle" fill="#1a5276" font-size="12" font-weight="700">LTG-Level Graph</text>
+      <text x="30" y="55" fill="#5d6d7e" font-size="10">Y-axis: <tspan fill="#2e86c1" font-weight="600">Goal Count</tspan></text>
+      <text x="30" y="75" fill="#5d6d7e" font-size="10">Legend: Weekly Count · Total Count · Linear Regression</text>
+      <text x="30" y="100" fill="#5d6d7e" font-size="10">Bottom controls:</text>
+      <rect x="30" y="108" width="80" height="18" rx="4" fill="#f0f0f0" stroke="#bdc3c7"/>
+      <text x="70" y="121" text-anchor="middle" fill="#2c3e50" font-size="8">☐ Gridlines</text>
+      <rect x="120" y="108" width="130" height="18" rx="4" fill="#f0f0f0" stroke="#bdc3c7"/>
+      <text x="185" y="121" text-anchor="middle" fill="#2c3e50" font-size="8">Cumulative Weekly ▾</text>
+      <text x="30" y="155" fill="#5d6d7e" font-size="9">Shows how many targets have been</text>
+      <text x="30" y="168" fill="#5d6d7e" font-size="9">mastered over time under this LTG.</text>
+
+      <rect x="320" y="10" width="285" height="180" rx="8" fill="white" stroke="#27ae60" stroke-width="2"/>
+      <text x="462" y="32" text-anchor="middle" fill="#1a5276" font-size="12" font-weight="700">Target-Level Graph</text>
+      <text x="335" y="55" fill="#5d6d7e" font-size="10">Y-axis: <tspan fill="#27ae60" font-weight="600">Percent Correct</tspan></text>
+      <text x="335" y="75" fill="#5d6d7e" font-size="10">Legend: Baseline · Intervention · Gen. · Maint.</text>
+      <text x="335" y="95" fill="#5d6d7e" font-size="10">Also shows: Goal Line · Phase Change · Events</text>
+      <text x="335" y="120" fill="#5d6d7e" font-size="10">Top controls: Zoom (1m/3m/6m/YTD/1y/All)</text>
+      <text x="335" y="155" fill="#5d6d7e" font-size="9">Shows session-by-session performance</text>
+      <text x="335" y="168" fill="#5d6d7e" font-size="9">on a specific skill.</text>
+    </svg>
+    <div class="diagram-caption">Different views for different purposes. If you're looking at a flat "Goal Count" graph, you're at the LTG level — drill into a target.</div>
+  </div>
+
+  <h3>The "Cumulative Weekly" dropdown</h3>
+  <p>This only appears on the LTG-level graph. It controls how mastered-goal data is grouped:</p>
+  <table class="ref-table">
+    <tr><th>Option</th><th>Shows</th></tr>
+    <tr><td>Cumulative Weekly / Monthly / Quarterly</td><td>Running total of goals met, grouped by time period</td></tr>
+    <tr><td>Percent Weekly / Monthly / Quarterly</td><td>Percentage of goals met out of total, by time period</td></tr>
+  </table>
+  <div class="callout callout-tip">
+    For progress reports, use <strong>Cumulative Monthly</strong> or <strong>Percent Monthly</strong> to show payors a clear picture of mastery progress across the authorization period.
+  </div>
+</div>
+
+<div class="article" id="art-graph-zoom">
+  <h2>Zoom & Date Controls</h2>
+  <p>Above every target graph, you'll see zoom buttons and date pickers:</p>
+  <table class="ref-table">
+    <tr><th>Button</th><th>Shows</th><th>Best For</th></tr>
+    <tr><td><strong>1m</strong></td><td>Last month</td><td>Recent session review</td></tr>
+    <tr><td><strong>3m</strong></td><td>Last 3 months</td><td>Quarterly progress check</td></tr>
+    <tr><td><strong>6m</strong></td><td>Last 6 months</td><td>Authorization period review</td></tr>
+    <tr><td><strong>YTD</strong></td><td>Year to date</td><td>Annual review</td></tr>
+    <tr><td><strong>1y</strong></td><td>Last 12 months</td><td>Full-year comparison</td></tr>
+    <tr><td><strong>All</strong></td><td>Everything</td><td>Full history of this target</td></tr>
+  </table>
+  <p>The <strong>From / To</strong> date pickers let you set a custom range — useful for matching authorization periods exactly.</p>
+  <div class="callout callout-info">
+    <strong>Graph looks empty?</strong>
+    Check the date range first. If the From/To is too narrow, data points outside that window won't show. Click <strong>"All"</strong> to see everything.
+  </div>
+</div>
+
+<div class="article" id="art-graph-export">
+  <h2>Exporting & Printing</h2>
+  <p>Click the <strong>hamburger menu (≡)</strong> in the top-right corner of any graph to see export options:</p>
+  <div class="step"><div class="step-num">🖨</div><div class="step-text"><strong>Print chart</strong> — sends to your printer.</div></div>
+  <div class="step"><div class="step-num">📷</div><div class="step-text"><strong>Download PNG / JPEG / SVG</strong> — saves as an image. You get two sub-options: <em>"WITH blue navigation bar"</em> and <em>"WITHOUT blue navigation bar."</em></div></div>
+  <div class="step"><div class="step-num">📊</div><div class="step-text"><strong>Download CSV</strong> — exports raw data as a spreadsheet file.</div></div>
+
+  <div class="callout callout-tip">
+    For progress reports, use <strong>"Download PNG — WITHOUT blue navigation bar"</strong> for a clean graph image you can paste directly into Word or a PDF report.
+  </div>
+</div>
+
+<div class="article" id="art-graph-analysis">
+  <h2>Graph Analysis Page</h2>
+  <p>A separate full-screen charting tool. Get there via <span class="path">Tree Options → Graph Analysis</span> (or <span class="path">Branch Options → Graph Analysis</span>).</p>
+
+  <h3>Chart types</h3>
+  <table class="ref-table">
+    <tr><th>Type</th><th>What It Shows</th><th>When to Use</th></tr>
+    <tr><td><strong>Scatterplot</strong></td><td>Data points by time of day (Y = time, X = date)</td><td>Check if time-of-day affects performance</td></tr>
+    <tr><td><strong>Advanced Analysis</strong></td><td>Data grouped by time intervals (configurable)</td><td>Compare across days of week, hours, etc.</td></tr>
+    <tr><td><strong>Learning Opps Per Date</strong></td><td>Trial counts per session</td><td>Check if enough opportunities are being run</td></tr>
+    <tr><td><strong>ABC Bar / Line / Pie</strong></td><td>Antecedent-Behavior-Consequence data</td><td>Behavior function analysis</td></tr>
+  </table>
+
+  <h3>Status filters (left sidebar)</h3>
+  <p>The left sidebar on this page has clickable status filters: <strong>New, Regression, No Progress, In Progress, Met</strong>. Click <strong>Regression</strong> and <strong>No Progress</strong> to quickly see which targets need attention.</p>
+
+  <h3>Scatterplot controls</h3>
+  <p><strong>Daily Time Window</strong> (From/To hours) narrows the view to specific hours. <strong>Y-axis Interval</strong> sets the time scale (Half hour, Hour, Two hours). <strong>Show gridlines</strong> and <strong>Show data labels</strong> toggle visual aids.</p>
+
+  <h3>Advanced Analysis controls</h3>
+  <p><strong>Smaller Interval</strong> = unit of measurement (15 min, 30 min, hour, day). <strong>Larger Interval</strong> = grouping period (hour, day, week, month). Try <em>Day + Week</em> to see which days perform best, or <em>Hour + Day</em> for time-of-day patterns.</p>
+</div>
+
+<div class="article" id="art-graph-trendlines">
+  <h2>Trendlines</h2>
+  <p>The <strong>Linear Regression</strong> line (visible in the LTG graph legend and the Graph Analysis page) is a straight line drawn through your data that shows the overall direction, smoothing out day-to-day noise.</p>
+  <p><strong>Angled up</strong> = progress is happening. <strong>Flat</strong> = no change, may need a procedure adjustment. <strong>Angled down</strong> = performance declining, investigate.</p>
+  <p>Trendlines need at least 5+ data points in a phase to be reliable. Don't read too much into a trendline based on 2-3 sessions.</p>
+  <div class="callout callout-info">
+    The inline target graph doesn't show a trendline by default — you see it in the <strong>LTG-level graph</strong> (as "Linear Regression" in the legend) and in the <strong>Graph Analysis → Scatterplot</strong> view.
+  </div>
+</div>
+
+<!-- ===== DATA ===== -->
+
+<div class="article" id="art-data-history">
+  <h2>Data History Table</h2>
+  <p>Click the <strong>Data History (🕐)</strong> icon to see a table of every data entry for a target.</p>
+
+  <table class="ref-table">
+    <tr><th>Column</th><th>What It Shows</th></tr>
+    <tr><td><strong>User</strong></td><td>Who entered the data (e.g., "L. Jones" = RBT, "P. Momtsios" = BCBA)</td></tr>
+    <tr><td><strong>Type</strong></td><td>Data point, Phase Change (colored badge), or Event</td></tr>
+    <tr><td><strong>Comment</strong></td><td>Notes attached (e.g., "Intervention")</td></tr>
+    <tr><td><strong>Data</strong></td><td>The actual score/value</td></tr>
+    <tr><td><strong>Learning Opp.</strong></td><td>How many trials were given that session</td></tr>
+    <tr><td><strong>Date</strong></td><td>When collected</td></tr>
+  </table>
+
+  <p><strong>Deleted entries</strong> show with a strikethrough and display who deleted them, when, and the reason. This creates an audit trail.</p>
+
+  <h3>Summary stats at the bottom</h3>
+  <p><strong>Total Learning Opportunities</strong> = sum of all trials. <strong>Total Data Points</strong> = number of sessions. <strong>Learning Opportunities Per Data Point</strong> = average trials per session. If this is very low, the RBT may not be running enough trials.</p>
+</div>
+
+<div class="article" id="art-data-phase-lines">
+  <h2>Phase Change Lines</h2>
+  <p>A phase change line is the vertical dashed line on the graph separating phases (e.g., Baseline → Intervention). The line goes <strong>between</strong> the last data point of the old phase and the first data point of the new phase.</p>
+
+  <h3>Adding a phase change</h3>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Click the target so its graph is showing.</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Click <strong>Data History (🕐)</strong> in the sidebar.</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Use the <strong>+ button</strong> to add a new phase change.</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Select the phase type (Baseline, Intervention, Generalization, Maintenance) and the correct date.</div></div>
+
+  <h3>If you placed it at the wrong date</h3>
+  <p>Open <strong>Data History</strong>, find the phase change entry, delete it (you'll type a reason like "incorrect date"), then add a new one at the right date. The deleted entry stays visible in Data History with a strikethrough as an audit trail, but it won't affect the graph.</p>
+</div>
+
+<div class="article" id="art-data-fix-point">
+  <h2>Fixing a Wrong Data Point</h2>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Open <strong>Data History (🕐)</strong>.</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Find the incorrect data entry.</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Delete it</strong> with a reason (e.g., "incorrect score — should be 4/5 not 2/5").</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Click <strong>Add Data (⊕)</strong> to enter the correct value at the correct date.</div></div>
+  <div class="callout callout-tip">
+    CR asks for a reason when you delete — something short like "wrong score entered" is fine and helps when reviewing the history later.
+  </div>
+</div>
+
+<!-- ===== GOALS ===== -->
+
+<div class="article" id="art-goal-details">
+  <h2>Viewing & Updating Goal Status</h2>
+  <p>Click <strong>View Goal (⊙)</strong> in the sidebar to open the Goal Details panel.</p>
+
+  <table class="ref-table">
+    <tr><th>Field</th><th>What It Means</th></tr>
+    <tr><td><strong>Domain</strong></td><td>Skill area (communication, social, adaptive, etc.)</td></tr>
+    <tr><td><strong>Type</strong></td><td>Usually "Target" for STG items</td></tr>
+    <tr><td><strong>Responsibility</strong></td><td>Who's responsible</td></tr>
+    <tr><td><strong>Date Initiated</strong></td><td>When data collection started</td></tr>
+    <tr><td><strong>In Progress Date</strong></td><td>When active intervention began</td></tr>
+  </table>
+
+  <h3>Status options</h3>
+  <p><strong>Not Active</strong> → <strong>In Progress</strong> → <strong>On Hold</strong> / <strong>Met</strong> / <strong>Discontinued</strong></p>
+  <p>Click the status button you want, then click <strong>Update</strong>.</p>
+
+  <div class="callout callout-warning">
+    <strong>Update</strong> saves to this target only. <strong>Update All</strong> applies the change to every target in the branch — so double-check which one you're clicking.
+  </div>
+</div>
+
+<div class="article" id="art-goal-edit">
+  <h2>Editing Goal Instructions</h2>
+  <p>To change a target's SD, prompting procedure, tech statement, or examples:</p>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Click the target in the tree.</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Click <strong>Edit (✏️)</strong> in the sidebar.</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">The <strong>Branch Details</strong> panel opens with two fields: <strong>Branch Title</strong> and <strong>Branch Description</strong> (rich text editor — supports bold, underline, lists, tables, images).</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Make your changes.</div></div>
+  <div class="step"><div class="step-num">5</div><div class="step-text">Click <strong>"Done Editing"</strong> to save, or <strong>"Cancel"</strong> to discard.</div></div>
+
+  <div class="callout callout-info">
+    "Done Editing" saves immediately — if you're making big changes, it's worth copying the current text somewhere first just in case.
+  </div>
+</div>
+
+<div class="article" id="art-goal-add">
+  <h2>Adding New Targets</h2>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Click the <strong>parent branch</strong> (the STG or LTG you want to add under).</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Click <strong>Add Branch (＋)</strong> in the sidebar.</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Enter the Branch Title and Description.</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Click <strong>Done Editing</strong>.</div></div>
+  <div class="step"><div class="step-num">5</div><div class="step-text">Then open <strong>View Goal (⊙)</strong> to set the Domain, dates, and mark as "In Progress."</div></div>
+
+  <div class="callout callout-tip">
+    If the new target is similar to an existing one, use <span class="path">Branch Options → Copy Branch</span> on the existing target, then edit the copy — faster than starting from scratch.
+  </div>
+</div>
+
+<div class="article" id="art-goal-labels">
+  <h2>Labels & Organization</h2>
+  <p>Each target has a <strong>"Click here to add labels"</strong> area below the title. Labels help you filter and organize.</p>
+
+  <table class="ref-table">
+    <tr><th>Label</th><th>Use For</th></tr>
+    <tr><td>Clinical</td><td>Active clinical goals</td></tr>
+    <tr><td>Non-Clinical</td><td>Administrative targets</td></tr>
+    <tr><td>New Goal</td><td>Recently added, not yet started</td></tr>
+    <tr><td>Mastered</td><td>Goals that have been met</td></tr>
+    <tr><td>On Hold</td><td>Temporarily paused</td></tr>
+    <tr><td>No Progress</td><td>Flag for attention</td></tr>
+    <tr><td>Regression</td><td>Performance declining</td></tr>
+  </table>
+
+  <div class="callout callout-tip">
+    Before supervision, add "No Progress" or "Regression" labels to targets that need discussion, then use the Graph Analysis page to filter by those labels.
+  </div>
+</div>
+
+<div class="article" id="art-goal-archive">
+  <h2>Archiving & Discontinuing</h2>
+  <p>Three ways to handle goals that are done or no longer needed:</p>
+
+  <div class="decision-box">
+    <h4>Mark as "Met"</h4>
+    <div class="decision-option"><span class="arr">→</span><span><span class="path">View Goal (⊙) → Met → Update</span>. Target stays visible in the tree with a "Met" badge. Data preserved.</span></div>
+  </div>
+  <div class="decision-box">
+    <h4>Mark as "Discontinued"</h4>
+    <div class="decision-option"><span class="arr">→</span><span><span class="path">View Goal (⊙) → Discontinued → Update</span>. Goal removed from the active plan but stays in the tree.</span></div>
+  </div>
+  <div class="decision-box">
+    <h4>Archive the Branch</h4>
+    <div class="decision-option"><span class="arr">→</span><span><span class="path">Branch Options → Archive Branch</span>. Hides from the tree entirely. Restore later from <span class="path">Tree Options → Archived Branches</span>.</span></div>
+  </div>
+</div>
+
+<div class="article" id="art-goal-branch-options">
+  <h2>Branch Options Menu</h2>
+  <p>Click <strong>"Branch Options"</strong> (top-right of the tree view, or the three-dot menu) to access:</p>
+
+  <table class="ref-table">
+    <tr><th>Option</th><th>What It Does</th></tr>
+    <tr><td><strong>Copy Branch</strong></td><td>Duplicate this branch to the same or another client's tree</td></tr>
+    <tr><td><strong>Bulk Copy Branch</strong></td><td>Copy to multiple clients at once</td></tr>
+    <tr><td><strong>Bulk Phase Changes</strong></td><td>Change the phase on all targets under this branch simultaneously</td></tr>
+    <tr><td><strong>Bulk Events</strong></td><td>Add an event marker across all targets (e.g., illness, vacation)</td></tr>
+    <tr><td><strong>Change to Draft</strong></td><td>Mark as draft — shouldn't be used for data yet</td></tr>
+    <tr><td><strong>Lock Branch</strong></td><td>Prevent any edits (finalized goals)</td></tr>
+    <tr><td><strong>Archive Branch</strong></td><td>Hide from active tree view</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    Bulk Phase Changes affects everything below the level you're on — at the LTG level, that means every target under it. Just check you're at the right level first.
+  </div>
+
+  <p>Also accessible from this menu: <span class="path">Graph Analysis</span>, <span class="path">ABC History</span>, <span class="path">Printable Datasheet</span>, and <span class="path">Create a Session</span>.</p>
+</div>
+
+<!-- ===== DOCUMENTS ===== -->
+
+<div class="article" id="art-docs-files">
+  <h2>The Files Section</h2>
+  <p>All uploaded documents (PDFs, forms, assessments) live here: <span class="path">☰ → Files</span>.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="620" height="180" fill="#fafbfc"/>
+      <rect x="10" y="10" width="600" height="30" rx="4" fill="#1e2a3a"/>
+      <text x="25" y="30" fill="white" font-size="12" font-weight="600">Files</text>
+      <rect x="490" y="15" width="110" height="20" rx="4" fill="#2e86c1"/>
+      <text x="545" y="29" text-anchor="middle" fill="white" font-size="9" font-weight="600">+ UPLOAD NEW</text>
+      <rect x="10" y="48" width="110" height="22" rx="4" fill="white" stroke="#2e86c1" stroke-width="1.5"/>
+      <text x="65" y="63" text-anchor="middle" fill="#2e86c1" font-size="10" font-weight="600">CURRENT</text>
+      <rect x="125" y="48" width="110" height="22" rx="4" fill="#f0f0f0" stroke="#bdc3c7"/>
+      <text x="180" y="63" text-anchor="middle" fill="#7f8c8d" font-size="10">ARCHIVED</text>
+      <text x="280" y="63" fill="#7f8c8d" font-size="9">LABELS  FILTERS  DOCUMENT TYPE</text>
+      <rect x="10" y="80" width="155" height="90" rx="4" fill="white" stroke="#bdc3c7"/>
+      <text x="20" y="100" fill="#1a5276" font-size="9" font-weight="600">📁 Client Documentation</text>
+      <text x="20" y="118" fill="#1a5276" font-size="9" font-weight="600">📁 Client SFL</text>
+      <text x="20" y="136" fill="#1a5276" font-size="9" font-weight="600">📁 Test</text>
+      <text x="88" y="162" text-anchor="middle" fill="#aab7b8" font-size="8">Folder tree</text>
+      <rect x="175" y="80" width="435" height="90" rx="4" fill="white" stroke="#bdc3c7"/>
+      <text x="185" y="96" fill="#7f8c8d" font-size="8" font-weight="600">🔍 Search files...     Date files added: ____     ALL | AUTHORIZED</text>
+      <line x1="175" y1="105" x2="610" y2="105" stroke="#ecf0f1"/>
+      <text x="185" y="118" fill="#7f8c8d" font-size="8" font-weight="600">Type    ID    File Name                          Labels  Size   Added By</text>
+      <line x1="175" y1="124" x2="610" y2="124" stroke="#ecf0f1"/>
+      <text x="185" y="138" fill="#2e86c1" font-size="8">📄 42705  Tech Training Note 2025               Preview  58KB</text>
+      <text x="185" y="153" fill="#2e86c1" font-size="8">📄 42705  Daily Rest Period Reporting Form       Preview  85KB</text>
+    </svg>
+    <div class="diagram-caption">The Files page: folder tree on the left, searchable file list on the right, with date and type filters.</div>
+  </div>
+
+  <p>The page has two main tabs: <strong>CURRENT</strong> (recent files) and <strong>ARCHIVED</strong> (older documents moved automatically). Each file has a <strong>Preview</strong> button to view without downloading.</p>
+</div>
+
+<div class="article" id="art-docs-search">
+  <h2>Searching & Filtering Files</h2>
+
+  <div class="step"><div class="step-num">🔍</div><div class="step-text"><strong>Search bar</strong> — type part of a file name to filter instantly. Fastest way to find something specific.</div></div>
+  <div class="step"><div class="step-num">📅</div><div class="step-text"><strong>Date filter</strong> — narrow to documents uploaded within a specific date range.</div></div>
+  <div class="step"><div class="step-num">📁</div><div class="step-text"><strong>Folder tree</strong> — click a folder (Client Documentation, etc.) to filter by category.</div></div>
+  <div class="step"><div class="step-num">🏷</div><div class="step-text"><strong>LABELS / DOCUMENT TYPE tabs</strong> — filter by tags or form template type.</div></div>
+  <div class="step"><div class="step-num">🔒</div><div class="step-text"><strong>Classified toggle</strong> — show only classified or unclassified documents.</div></div>
+  <div class="step"><div class="step-num">✅</div><div class="step-text"><strong>ALL vs AUTHORIZED</strong> — "ALL" shows everything; "AUTHORIZED" shows only files linked to authorized services.</div></div>
+
+  <div class="callout callout-tip">
+    <strong>Can't find a document?</strong>
+    1. Click <strong>"CLEAR FILTERS"</strong> first. 2. Make sure you're on "ALL," not "AUTHORIZED." 3. Check the <strong>"ARCHIVED"</strong> tab. 4. Try searching with just part of the filename.
+  </div>
+</div>
+
+<div class="article" id="art-docs-tree">
+  <h2>Documents in the Learning Tree</h2>
+  <p>Many client documents also live <em>inside</em> the Learning Tree as branches. When you open a client's tree, you'll see folders like:</p>
+  <p><strong>Client Face Page</strong> · <strong>Session Tips</strong> · <strong>Coordination of Care Provider List</strong> · <strong>Evaluation Information</strong> · <strong>Client Information &amp; Progress Summary</strong> · <strong>Background Information</strong> · <strong>Risk Assessment / Behavior Management</strong> · <strong>Assessment Information</strong></p>
+  <p>Each of these is a clickable branch. Some have sub-folders with additional documents. Branches with a 📄 icon next to them have viewable document content attached.</p>
+
+  <div class="callout callout-info">
+    <strong>Two places to look for documents.</strong>
+    If you can't find something in <span class="path">☰ → Files</span>, check the client's Learning Tree. Client-specific documents (assessments, behavior plans, session tips) often live as tree branches rather than uploaded files.
+  </div>
+</div>
+
+<!-- ===== HELP ===== -->
+
+<div class="article" id="art-help-resources">
+  <h2>CR's Own Documentation</h2>
+  <p>Central Reach has its own help resources built in — worth bookmarking if you haven't already.</p>
+
+  <h3>CR Community</h3>
+  <p><a href="https://community.centralreach.com/s/" target="_blank" style="color:var(--accent)">community.centralreach.com</a> — searchable knowledge base with step-by-step articles. A few useful ones to have handy:</p>
+  <table class="ref-table">
+    <tr><td>How To: Add Session Notes to Timesheets</td></tr>
+    <tr><td>How To: Convert an Appointment to a Timesheet</td></tr>
+    <tr><td>How To: Complete Session Notes in CR Mobile</td></tr>
+  </table>
+
+  <h3>Help Site links</h3>
+  <p>Throughout CR, you'll see small blue "Help Site" links next to widget titles on the dashboard. These go straight to the relevant help article for that feature.</p>
+
+  <h3>Resource Center</h3>
+  <p>The question mark / life ring icon in the bottom-right corner of CR opens the Resource Center — contextual help, walkthroughs, and training videos.</p>
+</div>
+
+  </div><!-- end .content -->
+</div><!-- end .main -->
+
+<script>
+function showArticle(id) {
+  document.querySelectorAll('.article').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const art = document.getElementById('art-' + id);
+  const nav = document.querySelector(`.nav-item[data-id="${id}"]`);
+  if (art) art.classList.add('active');
+  if (nav) {
+    nav.classList.add('active');
+    const group = nav.getAttribute('data-group');
+    const title = nav.textContent.trim();
+    document.getElementById('breadcrumb').innerHTML = group + ' › <span>' + title + '</span>';
+  }
+  closeSidebar();
+  window.scrollTo(0, 0);
+}
+
+function filterNav(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    const artId = item.getAttribute('data-id');
+    const art = document.getElementById('art-' + artId);
+    const artText = art ? art.textContent.toLowerCase() : '';
+    if (!q || text.includes(q) || artText.includes(q)) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
