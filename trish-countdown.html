@@ -31,6 +31,15 @@
     opacity: 0.12;
   }
 
+  /* Fireworks canvas — sits above matrix, below content */
+  #fireworks {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 5;
+    pointer-events: none;
+  }
+
   .scanlines {
     position: fixed;
     top: 0; left: 0;
@@ -52,6 +61,41 @@
       linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  /* Detonation flash + shockwave */
+  .flash {
+    position: fixed; inset: 0;
+    background: #fff;
+    opacity: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+  .flash.boom { animation: flashBoom 1.1s ease-out forwards; }
+  @keyframes flashBoom {
+    0% { opacity: 0; }
+    6% { opacity: 0.97; }
+    18% { opacity: 0.25; }
+    24% { opacity: 0.8; }
+    100% { opacity: 0; }
+  }
+
+  .shockwave {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 3px solid #00ffc8;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    z-index: 55;
+    pointer-events: none;
+    box-shadow: 0 0 50px #00ffc8, inset 0 0 30px #00ffc8;
+  }
+  .shockwave.go { animation: shock 1.2s cubic-bezier(0.1,0.7,0.2,1) forwards; }
+  @keyframes shock {
+    0% { transform: translate(-50%,-50%) scale(0); opacity: 0.95; }
+    100% { transform: translate(-50%,-50%) scale(70); opacity: 0; }
   }
 
   .container {
@@ -104,6 +148,21 @@
     margin-left: 2px;
   }
   @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+  /* Final-approach alert (last 2 days) */
+  .approach-alert {
+    display: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.6rem, 1.7vw, 0.8rem);
+    letter-spacing: 4px;
+    color: #ff3b3b;
+    margin: -6px auto 14px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255,59,59,0.7), 0 0 28px rgba(255,59,59,0.35);
+    animation: alertPulse 1s ease-in-out infinite;
+  }
+  @keyframes alertPulse { 0%,100%{opacity:0.55;} 50%{opacity:1;} }
+  body.final-approach .approach-alert { display: block; }
 
   /* Progress bar — moved to top */
   .progress-wrapper {
@@ -186,6 +245,17 @@
     50% { text-shadow: 0 0 30px rgba(0,255,200,0.8), 0 0 80px rgba(0,255,200,0.5), 0 0 120px rgba(0,255,200,0.25); }
   }
 
+  /* Final-approach cranks the number into fire-orange alarm mode */
+  body.final-approach .school-days-number {
+    color: #ff7b00;
+    text-shadow: 0 0 24px rgba(255,123,0,0.7), 0 0 70px rgba(255,90,0,0.4), 0 0 120px rgba(255,60,0,0.2);
+    animation: numberAlarm 0.9s ease-in-out infinite;
+  }
+  @keyframes numberAlarm {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.06); text-shadow: 0 0 34px rgba(255,140,0,0.95), 0 0 90px rgba(255,90,0,0.6); }
+  }
+
   .ring-label {
     font-family: 'Orbitron', sans-serif;
     font-size: clamp(0.6rem, 1.5vw, 0.75rem);
@@ -203,6 +273,45 @@
     50% { text-shadow: 0 0 15px rgba(200,80,255,0.7), 0 0 35px rgba(200,80,255,0.35); }
   }
 
+  /* The button that lets Trish detonate the exit herself */
+  .exit-trigger {
+    display: inline-block;
+    margin-top: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.7rem, 1.9vw, 0.85rem);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #00ffc8;
+    background: rgba(0, 255, 200, 0.06);
+    border: 1px solid rgba(0, 255, 200, 0.4);
+    border-radius: 4px;
+    padding: 11px 22px;
+    cursor: pointer;
+    position: relative;
+    z-index: 30;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 8px rgba(0,255,200,0.5);
+    box-shadow: 0 0 18px rgba(0,255,200,0.15), inset 0 0 14px rgba(0,255,200,0.05);
+  }
+  .exit-trigger:hover {
+    background: rgba(0, 255, 200, 0.16);
+    box-shadow: 0 0 30px rgba(0,255,200,0.45), inset 0 0 20px rgba(0,255,200,0.12);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .exit-trigger::before { content: '>> '; color: #ff00de; }
+  .exit-trigger::after { content: ' <<'; color: #ff00de; }
+  body.final-approach .exit-trigger {
+    border-color: rgba(255, 123, 0, 0.7);
+    color: #ff9b3b;
+    text-shadow: 0 0 10px rgba(255,123,0,0.7);
+    box-shadow: 0 0 26px rgba(255,123,0,0.35), inset 0 0 16px rgba(255,123,0,0.1);
+    animation: triggerPulse 1.1s ease-in-out infinite;
+  }
+  @keyframes triggerPulse {
+    0%,100% { box-shadow: 0 0 22px rgba(255,123,0,0.3), inset 0 0 14px rgba(255,123,0,0.08); }
+    50% { box-shadow: 0 0 40px rgba(255,123,0,0.6), inset 0 0 22px rgba(255,123,0,0.18); }
+  }
 
   /* System log — outside container for z-index */
   .sys-log {
@@ -274,38 +383,131 @@
     100% { transform: translateY(-110vh) scale(0); opacity: 0; }
   }
 
-  /* Done state */
-  .done-message { display: none; z-index: 10; text-align: center; padding: 20px; }
-  .done-message h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2rem, 7vw, 4rem);
-    font-weight: 900;
-    margin-bottom: 20px;
-    color: #fff;
-    text-shadow: 0 0 20px rgba(0,255,200,0.8), 0 0 60px rgba(0,255,200,0.4);
-    animation: glitchText 2s infinite;
-  }
-  .done-message p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    color: #00ffc8;
-    margin-bottom: 16px;
+  /* Detonation screen shake */
+  body.detonating { animation: shake 0.7s ease-in-out; overflow: hidden; }
+  @keyframes shake {
+    0%,100% { transform: translate(0,0); }
+    10% { transform: translate(-7px,5px); }
+    20% { transform: translate(8px,-6px); }
+    30% { transform: translate(-9px,-4px); }
+    40% { transform: translate(7px,7px); }
+    50% { transform: translate(-6px,4px); }
+    60% { transform: translate(8px,-7px); }
+    70% { transform: translate(-7px,6px); }
+    80% { transform: translate(6px,-5px); }
+    90% { transform: translate(-4px,3px); }
   }
 
-  body.school-over .container { display: none; }
-  body.school-over .done-message {
+  /* ════════ FINALE OVERLAY ════════ */
+  .finale {
+    display: none;
+    position: relative;
+    z-index: 40;
+    text-align: center;
+    padding: 24px 16px;
+    max-width: 920px;
+    width: 100%;
+  }
+  body.school-over .container,
+  body.school-over .sys-log { display: none !important; }
+  body.school-over .finale {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
+
+  .finale-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.3rem, 10vw, 6rem);
+    font-weight: 900;
+    letter-spacing: 4px;
+    line-height: 0.95;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 0 24px rgba(0,255,200,0.9), 0 0 70px rgba(0,255,200,0.5), 0 0 130px rgba(0,255,200,0.3);
+    animation: glitchText 2.4s infinite, slamIn 0.7s cubic-bezier(0.2,1.4,0.3,1) both;
+  }
+  @keyframes slamIn {
+    0% { transform: scale(2.6); opacity: 0; filter: blur(14px); }
+    60% { opacity: 1; }
+    100% { transform: scale(1); opacity: 1; filter: blur(0); }
+  }
+
+  .finale-kicker {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.7rem, 2vw, 0.95rem);
+    color: #00ffc8;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    text-shadow: 0 0 10px rgba(0,255,200,0.5);
+  }
+  .finale-kicker.show { opacity: 0.95; }
+
+  .finale-free {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 9vw, 5.4rem);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin: 6px 0 26px;
+    background: linear-gradient(90deg, #00ffc8, #00d4ff, #c850ff, #ff00de, #ff6600, #00ffc8);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 26px rgba(255,0,222,0.45));
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2,1.5,0.3,1);
+    animation: freeFlow 6s linear infinite;
+  }
+  .finale-free.show { opacity: 1; transform: scale(1); }
+  @keyframes freeFlow { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
+
+  .finale-lines {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.78rem, 2.4vw, 1.05rem);
+    line-height: 2;
+    margin-top: 4px;
+  }
+  .finale-lines .fl {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .finale-lines .fl.show { opacity: 1; transform: translateY(0); }
+  .finale-lines .fl.fire   { color: #ff7b1a; text-shadow: 0 0 12px rgba(255,110,0,0.6); }
+  .finale-lines .fl.purple { color: #cc66ff; text-shadow: 0 0 12px rgba(200,90,255,0.6); }
+  .finale-lines .fl.magenta{ color: #ff3bc4; text-shadow: 0 0 12px rgba(255,0,222,0.6); }
+
+  .finale-replay {
+    margin-top: 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: #667;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.6s ease, color 0.2s ease;
+    text-transform: uppercase;
+  }
+  .finale-replay.show { opacity: 0.6; }
+  .finale-replay:hover { color: #00ffc8; opacity: 1; }
+  .finale-replay::before { content: '[ '; }
+  .finale-replay::after { content: ' ]'; }
 </style>
 </head>
 <body>
 
 <canvas id="matrix"></canvas>
+<canvas id="fireworks"></canvas>
 <div class="scanlines"></div>
 <div class="grid-bg"></div>
+<div class="flash" id="flash"></div>
+<div class="shockwave" id="shockwave"></div>
 
 <div class="container">
   <div class="progress-wrapper">
@@ -321,6 +523,7 @@
 
   <h1>Trish // System Exit</h1>
   <div class="subtitle">initiating classroom_escape_protocol.exe</div>
+  <div class="approach-alert" id="approachAlert">// final approach — system exit imminent</div>
 
   <div class="center-piece">
     <canvas id="ringCanvas" width="340" height="340"></canvas>
@@ -331,7 +534,7 @@
     </div>
   </div>
 
-
+  <button class="exit-trigger" id="exitTrigger">initiate exit sequence</button>
 </div>
 
 <div class="sys-log" id="sysLog">
@@ -351,16 +554,26 @@
   <div class="log-line" data-delay="33000"><span class="log-prefix">></span> <span class="log-bright">let it go</span> — <span class="log-bright">let it land</span> — <span class="log-teal">let the new me lead</span></div>
 </div>
 
-<div class="done-message">
-  <h1>PROCESS COMPLETE</h1>
-  <p>> classroom_escape_protocol.exe finished successfully</p>
-  <p>> YOU'RE FREE, TRISH.</p>
-  <p style="color:#ff6600; margin-top:10px;">> fire_horse_2026.sys — FULLY LOADED</p>
-  <p style="color:#cc44ff;">> 9-year cycle complete. new cycle initialized.</p>
-  <p style="color:#ff00de; margin-top:10px;">> no more bells. no more lesson plans. no more cafeteria duty.</p>
+<div class="finale" id="finale">
+  <h1 class="finale-title" id="finaleTitle">PROCESS COMPLETE</h1>
+  <div class="finale-kicker" id="finaleKicker">> classroom_escape_protocol.exe finished successfully</div>
+  <div class="finale-free" id="finaleFree">YOU'RE FREE, TRISH.</div>
+  <div class="finale-lines">
+    <p class="fl fire" id="fl0">> fire_horse_2026.sys — FULLY LOADED</p>
+    <p class="fl purple" id="fl1">> 9-year cycle complete. new cycle initialized.</p>
+    <p class="fl magenta" id="fl2">> no more bells. no more lesson plans. no more cafeteria duty.</p>
+  </div>
+  <div class="finale-replay" id="finaleReplay">replay sequence</div>
 </div>
 
 <script>
+  // ═══════════════════════════════════════
+  //  GLOBAL STATE
+  // ═══════════════════════════════════════
+  let matrixFire = false;        // matrix rain switches to fire palette during finale
+  let ringSpeed = 0.001;         // ring rotation speed (cranks up near the end)
+  let finaleFired = false;
+
   // ═══════════════════════════════════════
   //  MATRIX RAIN
   // ═══════════════════════════════════════
@@ -378,17 +591,21 @@
   const fontSize = 14;
   let columns = Math.floor(canvas.width / fontSize);
   let drops = Array(columns).fill(1);
+  const FIRE_RAIN = ['#ff6600', '#ff3300', '#ff8800', '#ffaa00'];
 
   function drawMatrix() {
     ctx.fillStyle = 'rgba(10, 10, 15, 0.06)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#00ffc8';
     ctx.font = fontSize + 'px monospace';
 
     for (let i = 0; i < drops.length; i++) {
       const char = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillStyle = matrixFire
+        ? FIRE_RAIN[(i + drops[i]) % FIRE_RAIN.length]
+        : '#00ffc8';
       ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      const resetChance = matrixFire ? 0.94 : 0.975;
+      if (drops[i] * fontSize > canvas.height && Math.random() > resetChance) {
         drops[i] = 0;
       }
       drops[i]++;
@@ -403,6 +620,86 @@
   });
 
   // ═══════════════════════════════════════
+  //  FIREWORKS ENGINE
+  // ═══════════════════════════════════════
+  const fwCanvas = document.getElementById('fireworks');
+  const fwCtx = fwCanvas.getContext('2d');
+  let fwParticles = [];
+  let fwActive = false;
+  let fwTimer = null;
+
+  const FW_COLORS = ['#00ffc8','#ff00de','#00d4ff','#ff3366','#ccff00','#aa00ff','#ff6600','#00ff88','#ff0099','#66ffcc','#ffffff'];
+
+  function fwResize() {
+    fwCanvas.width = window.innerWidth;
+    fwCanvas.height = window.innerHeight;
+  }
+  fwResize();
+  window.addEventListener('resize', fwResize);
+
+  function fwPick() { return FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)]; }
+
+  function burst(x, y, forcedColor) {
+    const count = 55 + Math.floor(Math.random() * 45);
+    const color = forcedColor || fwPick();
+    const dual = Math.random() > 0.5 ? fwPick() : color;
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 5.5 + 1.5;
+      fwParticles.push({
+        x: x, y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        decay: Math.random() * 0.012 + 0.008,
+        color: Math.random() > 0.5 ? color : dual,
+        size: Math.random() * 2.2 + 1.3
+      });
+    }
+  }
+
+  function fwLoop() {
+    if (!fwActive) return;
+    fwCtx.fillStyle = 'rgba(10, 10, 15, 0.20)';
+    fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
+    fwCtx.globalCompositeOperation = 'lighter';
+    for (const p of fwParticles) {
+      p.vy += 0.045;
+      p.vx *= 0.992;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= p.decay;
+      fwCtx.globalAlpha = Math.max(0, p.life);
+      fwCtx.fillStyle = p.color;
+      fwCtx.shadowColor = p.color;
+      fwCtx.shadowBlur = 8;
+      fwCtx.beginPath();
+      fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      fwCtx.fill();
+    }
+    fwCtx.globalAlpha = 1;
+    fwCtx.shadowBlur = 0;
+    fwCtx.globalCompositeOperation = 'source-over';
+    fwParticles = fwParticles.filter(p => p.life > 0);
+    requestAnimationFrame(fwLoop);
+  }
+
+  function startFireworks() {
+    if (fwActive) return;
+    fwActive = true;
+    fwLoop();
+    fwTimer = setInterval(() => {
+      const n = 1 + Math.floor(Math.random() * 2);
+      for (let i = 0; i < n; i++) {
+        burst(
+          Math.random() * fwCanvas.width,
+          Math.random() * fwCanvas.height * 0.55 + fwCanvas.height * 0.05
+        );
+      }
+    }, 480);
+  }
+
+  // ═══════════════════════════════════════
   //  ORBITAL RING — 9-year cycle
   // ═══════════════════════════════════════
   const ringCanvas = document.getElementById('ringCanvas');
@@ -415,7 +712,6 @@
   const SEG_ARC = (2 * Math.PI / SEG_COUNT) - GAP;
   const START_OFFSET = -Math.PI / 2; // start from top
 
-  // 8 segments are complete (dark/spent), segment 9 is active and dimming
   let ringRotation = 0;
 
   function drawRing(progress) {
@@ -433,7 +729,6 @@
         ringCtx.strokeStyle = 'rgba(100, 50, 140, 0.25)';
         ringCtx.stroke();
 
-        // "Closed" dot at segment midpoint
         const midAngle = (startAngle + endAngle) / 2;
         const dotX = CENTER + Math.cos(midAngle) * RADIUS;
         const dotY = CENTER + Math.sin(midAngle) * RADIUS;
@@ -447,12 +742,10 @@
         const alpha = 0.35 + remaining * 0.65;
         const glow = remaining * 25;
 
-        // Full arc ghost (shows where it started)
         ringCtx.lineWidth = 4;
         ringCtx.strokeStyle = `rgba(200, 80, 255, ${alpha * 0.15})`;
         ringCtx.stroke();
 
-        // Remaining portion — bright and glowing
         const activeEnd = startAngle + SEG_ARC * remaining;
         ringCtx.beginPath();
         ringCtx.arc(CENTER, CENTER, RADIUS, startAngle, activeEnd);
@@ -463,7 +756,6 @@
         ringCtx.stroke();
         ringCtx.shadowBlur = 0;
 
-        // Leading edge dot
         const edgeX = CENTER + Math.cos(activeEnd) * RADIUS;
         const edgeY = CENTER + Math.sin(activeEnd) * RADIUS;
         ringCtx.beginPath();
@@ -476,14 +768,13 @@
       }
     }
 
-    // Subtle outer glow ring
     ringCtx.beginPath();
     ringCtx.arc(CENTER, CENTER, RADIUS + 10, 0, Math.PI * 2);
     ringCtx.strokeStyle = 'rgba(200, 80, 255, 0.04)';
     ringCtx.lineWidth = 1;
     ringCtx.stroke();
 
-    ringRotation += 0.001; // very slow rotation
+    ringRotation += ringSpeed;
   }
 
   // ═══════════════════════════════════════
@@ -498,7 +789,6 @@
       }, delay);
     });
 
-    // Loop: fade all out and replay after full sequence
     const totalDuration = 38000;
     setInterval(() => {
       lines.forEach(line => line.classList.remove('visible'));
@@ -562,18 +852,27 @@
   let currentProgress = 0;
 
   function updateCountdown() {
+    if (finaleFired) return;
+
     const now = new Date();
     const diff = LAST_DAY - now;
 
     if (diff <= 0) {
-      document.body.classList.add('school-over');
-      document.getElementById('progressFill').style.width = '100%';
-      document.getElementById('progressPct').textContent = '100%';
+      launchFinale(false);
       return;
     }
 
     const left = countSchoolDaysLeft();
     document.getElementById('schoolDays').textContent = left;
+
+    // Last two school days → final-approach alarm mode
+    if (left <= 2) {
+      document.body.classList.add('final-approach');
+      ringSpeed = 0.004;
+    } else {
+      document.body.classList.remove('final-approach');
+      ringSpeed = 0.001;
+    }
 
     const completed = TOTAL_SCHOOL_DAYS - left;
     currentProgress = Math.min(1, completed / TOTAL_SCHOOL_DAYS);
@@ -586,7 +885,7 @@
   //  ANIMATION LOOP (ring)
   // ═══════════════════════════════════════
   function animateRing() {
-    drawRing(currentProgress);
+    drawRing(finaleFired ? 1 : currentProgress);
     requestAnimationFrame(animateRing);
   }
   animateRing();
@@ -596,7 +895,7 @@
   // ═══════════════════════════════════════
   const NEON = ['#00ffc8','#ff00de','#00d4ff','#ff3366','#ccff00','#aa00ff','#ff6600','#00ff88','#ff0099','#66ffcc'];
 
-  function createConfettiPiece() {
+  function createConfettiPiece(fast) {
     const el = document.createElement('div');
     el.classList.add('confetti-piece');
     const size = Math.random() * 6 + 4;
@@ -607,14 +906,21 @@
     el.style.background = color;
     el.style.boxShadow = `0 0 6px ${color}, 0 0 12px ${color}`;
     el.style.borderRadius = Math.random() > 0.4 ? '50%' : '1px';
-    el.style.animationDuration = (Math.random() * 5 + 5) + 's';
-    el.style.animationDelay = (Math.random() * 6) + 's';
+    el.style.animationDuration = (fast ? (Math.random() * 2.5 + 2.5) : (Math.random() * 5 + 5)) + 's';
+    el.style.animationDelay = (fast ? Math.random() * 0.6 : Math.random() * 6) + 's';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 14000);
   }
 
   for (let i = 0; i < 50; i++) createConfettiPiece();
-  setInterval(() => { for (let i = 0; i < 3; i++) createConfettiPiece(); }, 700);
+  let confettiTimer = setInterval(() => { for (let i = 0; i < 3; i++) createConfettiPiece(); }, 700);
+
+  function bigConfettiBurst() {
+    for (let i = 0; i < 220; i++) createConfettiPiece(true);
+    // ramp the steady rate way up for the celebration
+    clearInterval(confettiTimer);
+    confettiTimer = setInterval(() => { for (let i = 0; i < 10; i++) createConfettiPiece(true); }, 350);
+  }
 
   // ═══════════════════════════════════════
   //  EMBER PARTICLES
@@ -638,11 +944,135 @@
   }
 
   for (let i = 0; i < 20; i++) createEmber();
-  setInterval(() => { createEmber(); }, 500);
+  let emberTimer = setInterval(() => { createEmber(); }, 500);
 
-  // Start
+  function rampEmbers() {
+    clearInterval(emberTimer);
+    emberTimer = setInterval(() => { createEmber(); createEmber(); }, 240);
+  }
+
+  // ═══════════════════════════════════════
+  //  CELEBRATION SOUND (only on a real tap/click)
+  // ═══════════════════════════════════════
+  function playFanfare() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const ac = new AC();
+      const now = ac.currentTime;
+
+      // rising whoosh
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(110, now);
+      o.frequency.exponentialRampToValueAtTime(880, now + 0.6);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(0.16, now + 0.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.95);
+      o.connect(g).connect(ac.destination);
+      o.start(now); o.stop(now + 1);
+
+      // triumphant chord stab
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach((f) => {
+        const oo = ac.createOscillator(), gg = ac.createGain();
+        oo.type = 'triangle';
+        oo.frequency.value = f;
+        const t = now + 0.62;
+        gg.gain.setValueAtTime(0.0001, t);
+        gg.gain.exponentialRampToValueAtTime(0.12, t + 0.04);
+        gg.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
+        oo.connect(gg).connect(ac.destination);
+        oo.start(t); oo.stop(t + 1.45);
+      });
+    } catch (e) { /* no audio, no problem */ }
+  }
+
+  // ═══════════════════════════════════════
+  //  THE FINALE
+  // ═══════════════════════════════════════
+  function revealFinaleSequence() {
+    const steps = [
+      ['finaleKicker', 'show', 350],
+      ['finaleFree',   'show', 850],
+      ['fl0',          'show', 1450],
+      ['fl1',          'show', 1850],
+      ['fl2',          'show', 2250],
+      ['finaleReplay', 'show', 2950],
+    ];
+    steps.forEach(([id, cls, delay]) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add(cls);
+      }, delay);
+    });
+  }
+
+  function launchFinale(userGesture) {
+    if (finaleFired) return;
+    finaleFired = true;
+
+    if (userGesture) playFanfare();
+
+    // lock the readout to its completed state
+    document.body.classList.remove('final-approach');
+    document.getElementById('schoolDays').textContent = '0';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressPct').textContent = '100%';
+
+    // BOOM
+    document.body.classList.add('detonating');
+    document.getElementById('flash').classList.add('boom');
+    document.getElementById('shockwave').classList.add('go');
+
+    matrixFire = true;
+    ringSpeed = 0.02;
+    startFireworks();
+    rampEmbers();
+    bigConfettiBurst();
+
+    // opening barrage of fireworks
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => burst(
+        Math.random() * window.innerWidth,
+        Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.08
+      ), i * 110);
+    }
+
+    setTimeout(() => {
+      document.body.classList.remove('detonating');
+      document.body.classList.add('school-over');
+      revealFinaleSequence();
+    }, 850);
+  }
+
+  function resetToCountdown() {
+    // replay = re-run the whole sequence from the top
+    document.body.classList.remove('school-over');
+    ['finaleKicker','finaleFree','fl0','fl1','fl2','finaleReplay'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+    finaleFired = false;
+    setTimeout(() => launchFinale(true), 120);
+  }
+
+  // ═══════════════════════════════════════
+  //  WIRING
+  // ═══════════════════════════════════════
+  document.getElementById('exitTrigger').addEventListener('click', () => launchFinale(true));
+  document.getElementById('finaleReplay').addEventListener('click', resetToCountdown);
+
+  // Deep-link straight into the celebration: ...#complete  or  ?complete
+  const forceComplete = /complete/i.test(location.hash) || /complete/i.test(location.search);
+
+  // Start the clock
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  if (forceComplete) {
+    setTimeout(() => launchFinale(false), 500);
+  }
 </script>
 </body>
 </html>
