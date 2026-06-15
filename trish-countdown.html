@@ -531,6 +531,9 @@
     opacity: 0.82;
     margin: -4px 0 10px;
   }
+  /* handwritten "You made it" lives in the finale, under the breach line */
+  .finale-sig { max-width: 440px; margin: 4px auto 22px; }
+  .finale-sig .sig-svg { filter: drop-shadow(0 0 1px rgba(255,210,122,0.3)); }
 
   /* ── Mobile tuning ── */
   @media (max-width: 480px) {
@@ -563,29 +566,7 @@
     </div>
   </div>
 
-  <div class="signature">
-    <svg class="sig-svg" viewBox="0 0 560 210" role="img" aria-label="Trish, handwritten">
-      <defs>
-        <filter id="sigGlow" x="-20%" y="-50%" width="140%" height="200%">
-          <feGaussianBlur stdDeviation="3.4" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <clipPath id="sigClip">
-          <rect x="-12" y="0" width="0" height="210">
-            <animate id="sigRev" attributeName="width" from="0" to="580" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
-          </rect>
-        </clipPath>
-      </defs>
-      <text x="20" y="150" font-family="'Sacramento', cursive" font-size="150" fill="#00ffc8" filter="url(#sigGlow)" clip-path="url(#sigClip)">Trish</text>
-      <circle r="5.5" cy="118" fill="#eafff9" filter="url(#sigGlow)" opacity="0">
-        <animate attributeName="cx" from="22" to="470" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
-        <animate attributeName="cy" values="118;84;126;100;116" keyTimes="0;0.28;0.55;0.8;1" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze"/>
-        <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze"/>
-      </circle>
-      <rect id="sigHit" x="0" y="0" width="560" height="210" fill="transparent" pointer-events="all" style="cursor:pointer"/>
-    </svg>
-  </div>
-  <div class="exit-tagline">// system exit</div>
+  <h1>Trish // System Exit</h1>
   <div class="subtitle">initiating classroom_escape_protocol.exe</div>
   <div class="approach-alert" id="approachAlert">// final approach — system exit imminent</div>
 
@@ -626,6 +607,28 @@
   <h1 class="finale-title" id="finaleTitle">PROCESS COMPLETE</h1>
   <div class="finale-kicker" id="finaleKicker">> classroom_escape_protocol.exe finished successfully</div>
   <div class="finale-free" id="finaleFree">ESCAPE HATCH BREACHED</div>
+  <div class="signature finale-sig">
+    <svg class="sig-svg" viewBox="0 0 760 200" role="img" aria-label="You made it, handwritten">
+      <defs>
+        <filter id="sigGlow2" x="-15%" y="-50%" width="130%" height="200%">
+          <feGaussianBlur stdDeviation="2.6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <clipPath id="sigClip2">
+          <rect x="-12" y="0" width="0" height="200">
+            <animate id="sig2Rev" attributeName="width" from="0" to="790" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+          </rect>
+        </clipPath>
+      </defs>
+      <text x="22" y="132" font-family="'Sacramento', cursive" font-size="98" fill="#ffd27a" filter="url(#sigGlow2)" clip-path="url(#sigClip2)">You made it</text>
+      <circle r="4.5" cy="104" fill="#fff6e0" filter="url(#sigGlow2)" opacity="0">
+        <animate id="sig2Cx" attributeName="cx" from="24" to="640" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+        <animate id="sig2Cy" attributeName="cy" values="104;78;112;90;104" keyTimes="0;0.28;0.55;0.8;1" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze"/>
+        <animate id="sig2Op" attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze"/>
+      </circle>
+      <rect id="sigHit2" x="0" y="0" width="760" height="200" fill="transparent" pointer-events="all" style="cursor:pointer"/>
+    </svg>
+  </div>
   <div class="finale-lines">
     <p class="fl fire" id="fl0">> fire_horse_2026.sys — FULLY LOADED</p>
     <p class="fl purple" id="fl1">> 9-year cycle complete. new cycle initialized.</p>
@@ -1103,14 +1106,22 @@
     }, 40);
   }
 
+  // trigger the SVG "You made it" handwriting (begins are 'indefinite')
+  function drawMadeIt() {
+    ['sig2Rev', 'sig2Cx', 'sig2Cy', 'sig2Op'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.beginElement) { try { el.beginElement(); } catch (e) {} }
+    });
+  }
+
   function revealFinaleSequence() {
     const steps = [
       ['finaleKicker', 'show', 350],
       ['finaleFree',   'show', 850],
-      ['fl0',          'show', 1450],
-      ['fl1',          'show', 1850],
-      ['fl2',          'show', 2250],
-      ['finaleReplay', 'show', 2950],
+      ['fl0',          'show', 2350],
+      ['fl1',          'show', 2700],
+      ['fl2',          'show', 3050],
+      ['finaleReplay', 'show', 3800],
     ];
     steps.forEach(([id, cls, delay]) => {
       setTimeout(() => {
@@ -1120,6 +1131,8 @@
         if (id === 'finaleFree') scrambleReveal(el, 'ESCAPE HATCH BREACHED', 950);
       }, delay);
     });
+    // handwritten "You made it" draws on just under the breach line
+    setTimeout(drawMadeIt, 1950);
   }
 
   function launchFinale(userGesture) {
