@@ -532,15 +532,15 @@
     margin: -4px 0 10px;
   }
   /* handwritten "You made it" lives in the finale, under the breach line */
-  .finale-sig { max-width: 440px; margin: 4px auto 22px; }
-  .finale-sig .sig-svg { filter: drop-shadow(0 0 1px rgba(255,210,122,0.3)); }
+  .finale-sig { max-width: min(820px, 94vw); margin: 2px auto 22px; }
+  .finale-sig .sig-svg { filter: drop-shadow(0 0 14px rgba(255,200,110,0.35)); }
 
   /* ── Mobile tuning ── */
   @media (max-width: 480px) {
     body { padding: 16px 14px; }
     .school-days-inner { padding: 44px 24px; }
     #ringCanvas { width: 280px; height: 280px; }
-    .signature { max-width: 300px; }
+    .finale-sig { max-width: 94vw; }
     .exit-trigger { padding: 13px 22px; }
   }
 </style>
@@ -608,25 +608,25 @@
   <div class="finale-kicker" id="finaleKicker">> classroom_escape_protocol.exe finished successfully</div>
   <div class="finale-free" id="finaleFree">ESCAPE HATCH BREACHED</div>
   <div class="signature finale-sig">
-    <svg class="sig-svg" viewBox="0 0 760 200" role="img" aria-label="You made it, handwritten">
+    <svg class="sig-svg" viewBox="0 0 760 220" role="img" aria-label="You made it, handwritten">
       <defs>
-        <filter id="sigGlow2" x="-15%" y="-50%" width="130%" height="200%">
-          <feGaussianBlur stdDeviation="2.6" result="b"/>
+        <filter id="sigGlow2" x="-20%" y="-60%" width="140%" height="220%">
+          <feGaussianBlur stdDeviation="3.2" result="b"/>
           <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
         <clipPath id="sigClip2">
-          <rect x="-12" y="0" width="0" height="200">
-            <animate id="sig2Rev" attributeName="width" from="0" to="790" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+          <rect x="-20" y="0" width="0" height="220">
+            <animate id="sig2Rev" attributeName="width" from="0" to="800" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
           </rect>
         </clipPath>
       </defs>
-      <text x="22" y="132" font-family="'Sacramento', cursive" font-size="98" fill="#ffd27a" filter="url(#sigGlow2)" clip-path="url(#sigClip2)">You made it</text>
-      <circle r="4.5" cy="104" fill="#fff6e0" filter="url(#sigGlow2)" opacity="0">
-        <animate id="sig2Cx" attributeName="cx" from="24" to="640" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
-        <animate id="sig2Cy" attributeName="cy" values="104;78;112;90;104" keyTimes="0;0.28;0.55;0.8;1" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze"/>
-        <animate id="sig2Op" attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="1.9s" begin="indefinite; sigHit2.click" fill="freeze"/>
+      <text x="380" y="150" text-anchor="middle" font-family="'Sacramento', cursive" font-size="116" fill="#ffd27a" filter="url(#sigGlow2)" clip-path="url(#sigClip2)">You made it</text>
+      <circle r="5" cy="120" fill="#fff6e0" filter="url(#sigGlow2)" opacity="0">
+        <animate id="sig2Cx" attributeName="cx" from="120" to="640" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+        <animate id="sig2Cy" attributeName="cy" values="120;92;128;104;120" keyTimes="0;0.28;0.55;0.8;1" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze"/>
+        <animate id="sig2Op" attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze"/>
       </circle>
-      <rect id="sigHit2" x="0" y="0" width="760" height="200" fill="transparent" pointer-events="all" style="cursor:pointer"/>
+      <rect id="sigHit2" x="0" y="0" width="760" height="220" fill="transparent" pointer-events="all" style="cursor:pointer"/>
     </svg>
   </div>
   <div class="finale-lines">
@@ -1035,50 +1035,58 @@
       master.gain.value = 0.85;
       master.connect(ac.destination);
 
-      // 1) low "hatch pop" — the latch letting go
-      const t = ac.createOscillator(), tg = ac.createGain();
-      t.type = 'sine';
-      t.frequency.setValueAtTime(150, now);
-      t.frequency.exponentialRampToValueAtTime(44, now + 0.18);
-      tg.gain.setValueAtTime(0.0001, now);
-      tg.gain.exponentialRampToValueAtTime(0.55, now + 0.015);
-      tg.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
-      t.connect(tg).connect(master); t.start(now); t.stop(now + 0.36);
+      // spacious tail (feedback delay) for a modern, cinematic feel
+      const delay = ac.createDelay(); delay.delayTime.value = 0.19;
+      const fb = ac.createGain(); fb.gain.value = 0.26;
+      const wet = ac.createGain(); wet.gain.value = 0.22;
+      delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(master);
 
-      // 2) ninja "swish" — filtered noise sweeping upward
-      const dur = 0.42;
+      // 1) soft rounded impact — the latch releasing (warm, not chiptune)
+      const imp = ac.createOscillator(), impG = ac.createGain();
+      imp.type = 'sine';
+      imp.frequency.setValueAtTime(118, now);
+      imp.frequency.exponentialRampToValueAtTime(50, now + 0.22);
+      impG.gain.setValueAtTime(0.0001, now);
+      impG.gain.exponentialRampToValueAtTime(0.5, now + 0.02);
+      impG.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      imp.connect(impG).connect(master); imp.start(now); imp.stop(now + 0.52);
+
+      // 2) airy whoosh — noise through a rising lowpass, swelling in and out
+      const dur = 0.7;
       const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * dur), ac.sampleRate);
       const data = buf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 1.6);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / data.length);
       const noise = ac.createBufferSource(); noise.buffer = buf;
-      const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
-      bp.frequency.setValueAtTime(650, now + 0.03);
-      bp.frequency.exponentialRampToValueAtTime(5200, now + 0.32);
-      const ng = ac.createGain();
-      ng.gain.setValueAtTime(0.22, now + 0.03);
-      ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
-      noise.connect(bp).connect(ng).connect(master); noise.start(now + 0.03); noise.stop(now + 0.45);
+      const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.7;
+      lp.frequency.setValueAtTime(380, now);
+      lp.frequency.exponentialRampToValueAtTime(6500, now + 0.5);
+      const nG = ac.createGain(); nG.gain.value = 0.14;
+      noise.connect(lp).connect(nG); nG.connect(master); nG.connect(delay);
+      noise.start(now + 0.02); noise.stop(now + 0.74);
 
-      // 3) "access granted" — ascending digital blips
-      [523.25, 784, 1046.5].forEach((f, i) => {
+      // 3) warm chord bloom — soft sines, slow attack (Cmaj7, cinematic resolve)
+      [261.63, 329.63, 392.00, 493.88].forEach((f, i) => {
         const o = ac.createOscillator(), g = ac.createGain();
-        o.type = 'square'; o.frequency.value = f;
-        const ts = now + 0.18 + i * 0.09;
-        g.gain.setValueAtTime(0.0001, ts);
-        g.gain.exponentialRampToValueAtTime(0.10, ts + 0.012);
-        g.gain.exponentialRampToValueAtTime(0.0001, ts + 0.13);
-        o.connect(g).connect(master); o.start(ts); o.stop(ts + 0.15);
+        o.type = i === 3 ? 'triangle' : 'sine';
+        o.frequency.value = f;
+        o.detune.value = (i - 1.5) * 4;
+        const t0 = now + 0.14;
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.2);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.9);
+        o.connect(g).connect(master); o.start(t0); o.stop(t0 + 2.0);
       });
 
-      // 4) bright confirm shimmer
-      [1568, 2093].forEach((f, i) => {
+      // 4) glassy shimmer — high sines into the delay (soft, modern, no coins)
+      [1318.51, 1975.53].forEach((f, i) => {
         const o = ac.createOscillator(), g = ac.createGain();
-        o.type = 'triangle'; o.frequency.value = f * (i ? 1.004 : 1);
-        const ts = now + 0.48;
-        g.gain.setValueAtTime(0.0001, ts);
-        g.gain.exponentialRampToValueAtTime(0.09, ts + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, ts + 0.95);
-        o.connect(g).connect(master); o.start(ts); o.stop(ts + 1.0);
+        o.type = 'sine'; o.frequency.value = f;
+        const t0 = now + 0.52 + i * 0.14;
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(0.07, t0 + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.4);
+        o.connect(g); g.connect(master); g.connect(delay);
+        o.start(t0); o.stop(t0 + 1.45);
       });
     } catch (e) { /* no audio, no problem */ }
   }
