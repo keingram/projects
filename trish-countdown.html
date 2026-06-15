@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRISH // SYSTEM EXIT</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sacramento&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -607,28 +607,6 @@
   <h1 class="finale-title" id="finaleTitle">PROCESS COMPLETE</h1>
   <div class="finale-kicker" id="finaleKicker">> classroom_escape_protocol.exe finished successfully</div>
   <div class="finale-free" id="finaleFree">ESCAPE HATCH BREACHED</div>
-  <div class="signature finale-sig">
-    <svg class="sig-svg" viewBox="0 0 760 220" role="img" aria-label="You made it, handwritten">
-      <defs>
-        <filter id="sigGlow2" x="-20%" y="-60%" width="140%" height="220%">
-          <feGaussianBlur stdDeviation="3.2" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <clipPath id="sigClip2">
-          <rect x="-20" y="0" width="0" height="220">
-            <animate id="sig2Rev" attributeName="width" from="0" to="800" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
-          </rect>
-        </clipPath>
-      </defs>
-      <text x="380" y="150" text-anchor="middle" font-family="'Sacramento', cursive" font-size="116" fill="#ffd27a" filter="url(#sigGlow2)" clip-path="url(#sigClip2)">You made it</text>
-      <circle r="5" cy="120" fill="#fff6e0" filter="url(#sigGlow2)" opacity="0">
-        <animate id="sig2Cx" attributeName="cx" from="120" to="640" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
-        <animate id="sig2Cy" attributeName="cy" values="120;92;128;104;120" keyTimes="0;0.28;0.55;0.8;1" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze"/>
-        <animate id="sig2Op" attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="2.0s" begin="indefinite; sigHit2.click" fill="freeze"/>
-      </circle>
-      <rect id="sigHit2" x="0" y="0" width="760" height="220" fill="transparent" pointer-events="all" style="cursor:pointer"/>
-    </svg>
-  </div>
   <div class="finale-lines">
     <p class="fl fire" id="fl0">> fire_horse_2026.sys — FULLY LOADED</p>
     <p class="fl purple" id="fl1">> 9-year cycle complete. new cycle initialized.</p>
@@ -916,8 +894,9 @@
 
   function countSchoolDaysLeft() {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    return countSchoolDays(today, new Date(2026, 5, 16));
+    // today's bell has already rung — count the school days still ahead, through the last day
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    return countSchoolDays(tomorrow, new Date(2026, 5, 16));
   }
 
   let currentProgress = 0;
@@ -933,7 +912,7 @@
       return;
     }
 
-    const left = countSchoolDaysLeft();
+    const left = Math.max(1, countSchoolDaysLeft());
     document.getElementById('schoolDays').textContent = left;
 
     // Last two school days → final-approach alarm mode
@@ -1114,22 +1093,14 @@
     }, 40);
   }
 
-  // trigger the SVG "You made it" handwriting (begins are 'indefinite')
-  function drawMadeIt() {
-    ['sig2Rev', 'sig2Cx', 'sig2Cy', 'sig2Op'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el && el.beginElement) { try { el.beginElement(); } catch (e) {} }
-    });
-  }
-
   function revealFinaleSequence() {
     const steps = [
       ['finaleKicker', 'show', 350],
       ['finaleFree',   'show', 850],
-      ['fl0',          'show', 2350],
-      ['fl1',          'show', 2700],
-      ['fl2',          'show', 3050],
-      ['finaleReplay', 'show', 3800],
+      ['fl0',          'show', 1500],
+      ['fl1',          'show', 1850],
+      ['fl2',          'show', 2200],
+      ['finaleReplay', 'show', 2900],
     ];
     steps.forEach(([id, cls, delay]) => {
       setTimeout(() => {
@@ -1139,8 +1110,6 @@
         if (id === 'finaleFree') scrambleReveal(el, 'ESCAPE HATCH BREACHED', 950);
       }, delay);
     });
-    // handwritten "You made it" draws on just under the breach line
-    setTimeout(drawMadeIt, 1950);
   }
 
   function launchFinale(userGesture) {
