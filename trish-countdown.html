@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRISH // SYSTEM EXIT</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sacramento&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -446,26 +446,46 @@
   }
   .finale-kicker.show { opacity: 0.95; }
 
+  /* Hero "breach" panel — deliberately a different language from the
+     Orbitron PROCESS COMPLETE title: monospace HUD readout, framed,
+     magenta, with a scramble-in reveal + terminal flicker. */
   .finale-free {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: clamp(2rem, 9vw, 5.4rem);
-    letter-spacing: 3px;
-    line-height: 1;
-    margin: 6px 0 26px;
-    background: linear-gradient(90deg, #00ffc8, #00d4ff, #c850ff, #ff00de, #ff6600, #00ffc8);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 26px rgba(255,0,222,0.45));
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
+    font-size: clamp(1.45rem, 6.2vw, 3.4rem);
+    letter-spacing: 0.16em;
+    line-height: 1.15;
+    margin: 8px 0 30px;
+    padding: 16px 30px 14px;
+    color: #ff45c8;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    border: 1px solid rgba(255,69,200,0.35);
+    border-radius: 2px;
+    box-shadow: 0 0 26px rgba(255,69,200,0.18), inset 0 0 22px rgba(255,69,200,0.06);
+    text-shadow: 0 0 10px rgba(255,69,200,0.85), 0 0 30px rgba(255,69,200,0.45);
     opacity: 0;
-    transform: scale(0.7);
-    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2,1.5,0.3,1);
-    animation: freeFlow 6s linear infinite;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
   }
-  .finale-free.show { opacity: 1; transform: scale(1); }
-  @keyframes freeFlow { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
+  .finale-free.show { opacity: 1; transform: none; animation: breachFlicker 3.4s infinite; }
+  /* cyan corner ticks — a "target lock / breach" HUD frame */
+  .finale-free::before, .finale-free::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border: 2px solid #00ffc8;
+    filter: drop-shadow(0 0 4px rgba(0,255,200,0.7));
+  }
+  .finale-free::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+  .finale-free::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+  @keyframes breachFlicker {
+    0%, 100% { text-shadow: 0 0 10px rgba(255,69,200,0.85), 0 0 30px rgba(255,69,200,0.45); }
+    50% { text-shadow: 0 0 14px rgba(255,69,200,1), 0 0 44px rgba(255,69,200,0.65); }
+    93% { text-shadow: 0 0 4px rgba(255,69,200,0.5); }
+    94% { text-shadow: 0 0 16px rgba(255,69,200,1), 0 0 48px rgba(255,69,200,0.75); }
+  }
 
   .finale-lines {
     font-family: 'Share Tech Mono', monospace;
@@ -498,6 +518,28 @@
   .finale-replay:hover { color: #00ffc8; opacity: 1; }
   .finale-replay::before { content: '[ '; }
   .finale-replay::after { content: ' ]'; }
+
+  /* ── Handwritten signature (page 1) ── */
+  .signature { max-width: 340px; margin: 6px auto 0; }
+  .sig-svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .exit-tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.65rem, 2.3vw, 0.9rem);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #79e6d4;
+    opacity: 0.82;
+    margin: -4px 0 10px;
+  }
+
+  /* ── Mobile tuning ── */
+  @media (max-width: 480px) {
+    body { padding: 16px 14px; }
+    .school-days-inner { padding: 44px 24px; }
+    #ringCanvas { width: 280px; height: 280px; }
+    .signature { max-width: 300px; }
+    .exit-trigger { padding: 13px 22px; }
+  }
 </style>
 </head>
 <body>
@@ -521,7 +563,29 @@
     </div>
   </div>
 
-  <h1>Trish // System Exit</h1>
+  <div class="signature">
+    <svg class="sig-svg" viewBox="0 0 560 210" role="img" aria-label="Trish, handwritten">
+      <defs>
+        <filter id="sigGlow" x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="3.4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <clipPath id="sigClip">
+          <rect x="-12" y="0" width="0" height="210">
+            <animate id="sigRev" attributeName="width" from="0" to="580" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+          </rect>
+        </clipPath>
+      </defs>
+      <text x="20" y="150" font-family="'Sacramento', cursive" font-size="150" fill="#00ffc8" filter="url(#sigGlow)" clip-path="url(#sigClip)">Trish</text>
+      <circle r="5.5" cy="118" fill="#eafff9" filter="url(#sigGlow)" opacity="0">
+        <animate attributeName="cx" from="22" to="470" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+        <animate attributeName="cy" values="118;84;126;100;116" keyTimes="0;0.28;0.55;0.8;1" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze"/>
+        <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="2.2s" begin="0.6s; sigHit.click" fill="freeze"/>
+      </circle>
+      <rect id="sigHit" x="0" y="0" width="560" height="210" fill="transparent" pointer-events="all" style="cursor:pointer"/>
+    </svg>
+  </div>
+  <div class="exit-tagline">// system exit</div>
   <div class="subtitle">initiating classroom_escape_protocol.exe</div>
   <div class="approach-alert" id="approachAlert">// final approach — system exit imminent</div>
 
@@ -537,27 +601,31 @@
   <button class="exit-trigger" id="exitTrigger">initiate exit sequence</button>
 </div>
 
-<div class="sys-log" id="sysLog">
-  <div class="log-line" data-delay="800"><span class="log-prefix">></span> <span class="log-cmd">loading fire_horse_2026.sys</span> — <span class="log-fire">once every 60 years</span></div>
-  <div class="log-line" data-delay="3200"><span class="log-prefix">></span> <span class="log-bright">what's ending isn't asking permission</span> — <span class="log-teal">it's asking for release</span></div>
-  <div class="log-line" data-delay="5600"><span class="log-prefix">></span> <span class="log-bright">the body knew before the mind caught up</span></div>
-  <div class="log-line" data-delay="7800"><span class="log-prefix">></span> <span class="log-dim">tolerance_threshold:</span> <span class="log-fire">exceeded</span> — <span class="log-dim">truth louder than hope</span></div>
-  <div class="log-line" data-delay="10200"><span class="log-prefix">></span> <span class="log-bright">i am not rebuilding my old life</span> — <span class="log-fire">i'm creating a new one</span></div>
-  <div class="log-line" data-delay="12600"><span class="log-prefix">></span> <span class="log-dim">from scratch</span> — <span class="log-dim">from truth</span> — <span class="log-purple">from a version of me that didn't exist before now</span></div>
-  <div class="log-line" data-delay="15200"><span class="log-prefix">></span> <span class="log-fire">the old path is burning</span> — <span class="log-dim">and i don't get to walk it anymore</span></div>
-  <div class="log-line" data-delay="17800"><span class="log-prefix">></span> <span class="log-bright">i'm perceiving in higher resolution than the systems around me can support</span></div>
-  <div class="log-line" data-delay="20400"><span class="log-prefix">></span> <span class="log-fire">this energy doesn't wait for permission</span> — <span class="log-bright">it moves because it must</span></div>
-  <div class="log-line" data-delay="22800"><span class="log-prefix">></span> <span class="log-cmd">what's complete is already loosening its grip</span></div>
-  <div class="log-line" data-delay="25200"><span class="log-prefix">></span> <span class="log-dim">fire_horse.status:</span> <span class="log-fire">wild</span> — <span class="log-fire">uncontained</span> — <span class="log-fire">unapologetic</span></div>
-  <div class="log-line" data-delay="27800"><span class="log-prefix">></span> <span class="log-bright">thank you to every version of me who carried this until i could</span></div>
-  <div class="log-line" data-delay="30400"><span class="log-prefix">></span> <span class="log-cmd">cycle_9:</span> <span class="log-purple">nine years of lessons — releasing</span></div>
-  <div class="log-line" data-delay="33000"><span class="log-prefix">></span> <span class="log-bright">let it go</span> — <span class="log-bright">let it land</span> — <span class="log-teal">let the new me lead</span></div>
-</div>
+<!-- Trish's workshopped system-log lines — kept here (off page 1) to focus
+     attention on the button. To restore: wrap these back in
+     <div class="sys-log" id="sysLog"> ... </div> and re-enable initSysLog().
+
+     > loading fire_horse_2026.sys — once every 60 years
+     > what's ending isn't asking permission — it's asking for release
+     > the body knew before the mind caught up
+     > tolerance_threshold: exceeded — truth louder than hope
+     > i am not rebuilding my old life — i'm creating a new one
+     > from scratch — from truth — from a version of me that didn't exist before now
+     > the old path is burning — and i don't get to walk it anymore
+     > i'm perceiving in higher resolution than the systems around me can support
+     > this energy doesn't wait for permission — it moves because it must
+     > what's complete is already loosening its grip
+     > fire_horse.status: wild — uncontained — unapologetic
+     > thank you to every version of me who carried this until i could
+     > cycle_9: nine years of lessons — releasing
+     > let it go — let it land — let the new me lead
+-->
+<div class="finale-spacer" aria-hidden="true"></div>
 
 <div class="finale" id="finale">
   <h1 class="finale-title" id="finaleTitle">PROCESS COMPLETE</h1>
   <div class="finale-kicker" id="finaleKicker">> classroom_escape_protocol.exe finished successfully</div>
-  <div class="finale-free" id="finaleFree">ESCAPE HATCH: BREACHED</div>
+  <div class="finale-free" id="finaleFree">ESCAPE HATCH BREACHED</div>
   <div class="finale-lines">
     <p class="fl fire" id="fl0">> fire_horse_2026.sys — FULLY LOADED</p>
     <p class="fl purple" id="fl1">> 9-year cycle complete. new cycle initialized.</p>
@@ -799,7 +867,7 @@
     }, totalDuration);
   }
 
-  initSysLog();
+  // system-log panel removed from page 1 (its copy is preserved as a comment in the markup)
 
   // ═══════════════════════════════════════
   //  SCHOOL CALENDAR
@@ -960,30 +1028,54 @@
       if (!AC) return;
       const ac = new AC();
       const now = ac.currentTime;
+      const master = ac.createGain();
+      master.gain.value = 0.85;
+      master.connect(ac.destination);
 
-      // rising whoosh
-      const o = ac.createOscillator(), g = ac.createGain();
-      o.type = 'sawtooth';
-      o.frequency.setValueAtTime(110, now);
-      o.frequency.exponentialRampToValueAtTime(880, now + 0.6);
-      g.gain.setValueAtTime(0.0001, now);
-      g.gain.exponentialRampToValueAtTime(0.16, now + 0.5);
-      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.95);
-      o.connect(g).connect(ac.destination);
-      o.start(now); o.stop(now + 1);
+      // 1) low "hatch pop" — the latch letting go
+      const t = ac.createOscillator(), tg = ac.createGain();
+      t.type = 'sine';
+      t.frequency.setValueAtTime(150, now);
+      t.frequency.exponentialRampToValueAtTime(44, now + 0.18);
+      tg.gain.setValueAtTime(0.0001, now);
+      tg.gain.exponentialRampToValueAtTime(0.55, now + 0.015);
+      tg.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+      t.connect(tg).connect(master); t.start(now); t.stop(now + 0.36);
 
-      // triumphant chord stab
-      const notes = [523.25, 659.25, 783.99, 1046.5];
-      notes.forEach((f) => {
-        const oo = ac.createOscillator(), gg = ac.createGain();
-        oo.type = 'triangle';
-        oo.frequency.value = f;
-        const t = now + 0.62;
-        gg.gain.setValueAtTime(0.0001, t);
-        gg.gain.exponentialRampToValueAtTime(0.12, t + 0.04);
-        gg.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
-        oo.connect(gg).connect(ac.destination);
-        oo.start(t); oo.stop(t + 1.45);
+      // 2) ninja "swish" — filtered noise sweeping upward
+      const dur = 0.42;
+      const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * dur), ac.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 1.6);
+      const noise = ac.createBufferSource(); noise.buffer = buf;
+      const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
+      bp.frequency.setValueAtTime(650, now + 0.03);
+      bp.frequency.exponentialRampToValueAtTime(5200, now + 0.32);
+      const ng = ac.createGain();
+      ng.gain.setValueAtTime(0.22, now + 0.03);
+      ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      noise.connect(bp).connect(ng).connect(master); noise.start(now + 0.03); noise.stop(now + 0.45);
+
+      // 3) "access granted" — ascending digital blips
+      [523.25, 784, 1046.5].forEach((f, i) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'square'; o.frequency.value = f;
+        const ts = now + 0.18 + i * 0.09;
+        g.gain.setValueAtTime(0.0001, ts);
+        g.gain.exponentialRampToValueAtTime(0.10, ts + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, ts + 0.13);
+        o.connect(g).connect(master); o.start(ts); o.stop(ts + 0.15);
+      });
+
+      // 4) bright confirm shimmer
+      [1568, 2093].forEach((f, i) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'triangle'; o.frequency.value = f * (i ? 1.004 : 1);
+        const ts = now + 0.48;
+        g.gain.setValueAtTime(0.0001, ts);
+        g.gain.exponentialRampToValueAtTime(0.09, ts + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ts + 0.95);
+        o.connect(g).connect(master); o.start(ts); o.stop(ts + 1.0);
       });
     } catch (e) { /* no audio, no problem */ }
   }
@@ -991,6 +1083,26 @@
   // ═══════════════════════════════════════
   //  THE FINALE
   // ═══════════════════════════════════════
+  // decrypt-style scramble that resolves to the final text, left to right
+  function scrambleReveal(el, finalText, duration) {
+    const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>*+=';
+    const len = finalText.length;
+    const totalFrames = Math.max(10, Math.round(duration / 40));
+    let frame = 0;
+    const iv = setInterval(() => {
+      const revealCount = Math.floor((frame / totalFrames) * len);
+      let out = '';
+      for (let i = 0; i < len; i++) {
+        if (finalText[i] === ' ') out += ' ';
+        else if (i < revealCount) out += finalText[i];
+        else out += pool[Math.floor(Math.random() * pool.length)];
+      }
+      el.textContent = out;
+      frame++;
+      if (frame > totalFrames) { clearInterval(iv); el.textContent = finalText; }
+    }, 40);
+  }
+
   function revealFinaleSequence() {
     const steps = [
       ['finaleKicker', 'show', 350],
@@ -1003,7 +1115,9 @@
     steps.forEach(([id, cls, delay]) => {
       setTimeout(() => {
         const el = document.getElementById(id);
-        if (el) el.classList.add(cls);
+        if (!el) return;
+        el.classList.add(cls);
+        if (id === 'finaleFree') scrambleReveal(el, 'ESCAPE HATCH BREACHED', 950);
       }, delay);
     });
   }
