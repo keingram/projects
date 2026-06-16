@@ -502,6 +502,7 @@
   .finale-lines .fl.fire   { color: #ff7b1a; text-shadow: 0 0 12px rgba(255,110,0,0.6); }
   .finale-lines .fl.purple { color: #cc66ff; text-shadow: 0 0 12px rgba(200,90,255,0.6); }
   .finale-lines .fl.magenta{ color: #ff3bc4; text-shadow: 0 0 12px rgba(255,0,222,0.6); }
+  .finale-lines .fl.teal   { color: #00ffc8; text-shadow: 0 0 12px rgba(0,255,200,0.6); }
 
   .finale-replay {
     margin-top: 30px;
@@ -611,6 +612,7 @@
     <p class="fl fire" id="fl0">> fire_horse_2026.sys — FULLY LOADED</p>
     <p class="fl purple" id="fl1">> 9-year cycle complete. new cycle initialized.</p>
     <p class="fl magenta" id="fl2">> she wrote her own exit and slipped through it.</p>
+    <p class="fl teal" id="fl3">> it's time to go get sushi.</p>
   </div>
   <div class="finale-replay" id="finaleReplay">replay sequence</div>
 </div>
@@ -1100,7 +1102,8 @@
       ['fl0',          'show', 1500],
       ['fl1',          'show', 1850],
       ['fl2',          'show', 2200],
-      ['finaleReplay', 'show', 2900],
+      ['fl3',          'show', 2550],
+      ['finaleReplay', 'show', 3250],
     ];
     steps.forEach(([id, cls, delay]) => {
       setTimeout(() => {
